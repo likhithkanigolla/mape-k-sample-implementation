@@ -5,7 +5,7 @@ from app.monitor import monitor
 from app.analyze import analyze
 from app.plan import plan
 from app.execute import execute
-from app.knowledge import set_thresholds, store_ml_model, get_historical_data, update_knowledge
+from app.knowledge import set_thresholds, store_ml_model, get_historical_data, update_knowledge, get_all_node_ids
 from app.ml_model import train_ml_model
 
 app = FastAPI()
@@ -53,7 +53,7 @@ async def train_node_model(node_id: str):
         raise HTTPException(status_code=500, detail=str(e))
 
 def scheduled_retraining():
-    node_ids = get_all_node_ids()  # Function to get all node IDs
+    node_ids = get_all_node_ids()
     for node_id in node_ids:
         try:
             historical_data = get_historical_data(node_id)
