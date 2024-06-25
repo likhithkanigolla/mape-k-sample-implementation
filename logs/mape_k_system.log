@@ -1,0 +1,16 @@
+2024-06-25 12:11:22,362:INFO:Monitoring data: node_id='node1' temperature=25.0 humidity=45.0
+2024-06-25 12:11:22,367:INFO:Data inserted into knowledge base: node_id='node1' temperature=25.0 humidity=45.0
+2024-06-25 12:11:22,367:INFO:Analyzing data: node_id='node1' temperature=25.0 humidity=45.0
+2024-06-25 12:11:22,367:INFO:Historical data for node node1: [(25.0, 45.0, '2024-06-25 06:41:22'), (25.0, 45.0, '2024-06-25 06:36:03')]
+2024-06-25 12:11:22,368:INFO:Planning based on analysis: {'status': 'normal', 'data': IoTNodeData(node_id='node1', temperature=25.0, humidity=45.0), 'historical_data': [(25.0, 45.0, '2024-06-25 06:41:22'), (25.0, 45.0, '2024-06-25 06:36:03')]}
+2024-06-25 12:11:22,368:INFO:Executing plan: {'action': 'none', 'details': {'status': 'normal', 'data': IoTNodeData(node_id='node1', temperature=25.0, humidity=45.0), 'historical_data': [(25.0, 45.0, '2024-06-25 06:41:22'), (25.0, 45.0, '2024-06-25 06:36:03')]}}
+2024-06-25 12:11:22,368:INFO:No action needed.
+2024-06-25 12:11:27,582:INFO:Monitoring data: node_id='node1' temperature=55.0 humidity=85.0
+2024-06-25 12:11:27,584:INFO:Data inserted into knowledge base: node_id='node1' temperature=55.0 humidity=85.0
+2024-06-25 12:11:27,584:INFO:Analyzing data: node_id='node1' temperature=55.0 humidity=85.0
+2024-06-25 12:11:27,584:INFO:Historical data for node node1: [(55.0, 85.0, '2024-06-25 06:41:27'), (25.0, 45.0, '2024-06-25 06:41:22'), (25.0, 45.0, '2024-06-25 06:36:03')]
+2024-06-25 12:11:27,584:INFO:Planning based on analysis: {'status': 'normal', 'data': IoTNodeData(node_id='node1', temperature=55.0, humidity=85.0), 'historical_data': [(55.0, 85.0, '2024-06-25 06:41:27'), (25.0, 45.0, '2024-06-25 06:41:22'), (25.0, 45.0, '2024-06-25 06:36:03')]}
+2024-06-25 12:11:27,584:INFO:Executing plan: {'action': 'none', 'details': {'status': 'normal', 'data': IoTNodeData(node_id='node1', temperature=55.0, humidity=85.0), 'historical_data': [(55.0, 85.0, '2024-06-25 06:41:27'), (25.0, 45.0, '2024-06-25 06:41:22'), (25.0, 45.0, '2024-06-25 06:36:03')]}}
+2024-06-25 12:11:27,584:INFO:No action needed.
+2024-06-25 12:11:33,722:INFO:Thresholds set for node node1: Temperature - 50.0, Humidity - 80.0
+2024-06-25 12:11:59,919:INFO:ML model stored for node node1
