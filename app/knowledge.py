@@ -81,3 +81,11 @@ def get_ml_model(node_id):
     WHERE node_id = ?
     ''', (node_id,))
     return c.fetchone()
+
+def get_all_node_ids():
+    conn = sqlite3.connect('knowledge.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT DISTINCT node_id FROM historical_data")
+    node_ids = [row[0] for row in cursor.fetchall()]
+    conn.close()
+    return node_ids
