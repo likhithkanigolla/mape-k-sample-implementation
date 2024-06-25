@@ -5,8 +5,9 @@ from app.monitor import monitor
 from app.analyze import analyze
 from app.plan import plan
 from app.execute import execute
-from app.knowledge import set_thresholds, store_ml_model, get_historical_data, update_knowledge, get_all_node_ids
+from app.knowledge import set_thresholds, store_ml_model, get_historical_data, update_knowledge, get_all_node_ids, get_thresholds,get_node_ids
 from app.ml_model import train_ml_model
+import pickle
 
 app = FastAPI()
 scheduler = BackgroundScheduler()
@@ -15,7 +16,8 @@ class IoTNodeData(BaseModel):
     node_id: str
     temperature: float
     humidity: float
-
+    
+    
 class Thresholds(BaseModel):
     node_id: str
     temperature_threshold: float
@@ -46,9 +48,44 @@ async def train_node_model(node_id: str):
         historical_data = get_historical_data(node_id)
         if not historical_data:
             raise HTTPException(status_code=404, detail="No historical data found for the specified node_id")
-        model_blob = train_ml_model(historical_data)
-        store_ml_model(node_id, model_blob)
+        model = train_ml_model(historical_data)
+        store_ml_model(node_id, model)
         return {"status": "success"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/get_data/{node_id}")
+async def get_data(node_id: str):
+    try:
+        historical_data = get_historical_data(node_id)
+        return historical_data
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+@app.get("/get_latest_data/{node_id}")
+async def get_latest_data(node_id: str):
+    try:
+        historical_data = get_historical_data(node_id)
+        if historical_data:
+            return historical_data[0]
+        else:
+            return None
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/get_all_node_ids")
+async def get_all_node_ids():
+    try:
+        node_ids = get_node_ids()
+        return node_ids
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/get_thresholds/{node_id}")
+async def get_thresholds_values(node_id: str):
+    try:
+        thresholds = get_thresholds(node_id)
+        return thresholds
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
