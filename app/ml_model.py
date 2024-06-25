@@ -13,17 +13,20 @@ class IoTNodeData(BaseModel):
     humidity: float
     anomaly_label: int
 
-def train_ml_model(data):
-    # Train a RandomForestClassifier model for anomaly detection
-    print(data)
-    # df = pd.DataFrame(data, columns=['temperature', 'humidity'])
-    # X = df[['temperature', 'humidity']]
-    # y = df['anomaly_label']  # Assuming you have a label indicating anomalies or normal data
+def train_ml_model(historical_data):
+    # Convert the historical data into a DataFrame for easier manipulation
+    columns = ['id', 'temperature', 'humidity', 'timestamp', 'anomaly_label']
+    df = pd.DataFrame(historical_data, columns=columns)
     
-    # model = RandomForestClassifier(n_estimators=100, random_state=42)
-    # model.fit(X, y)
+    # Prepare the feature matrix (X) and the target vector (y)
+    X = df[['temperature', 'humidity']]
+    y = df['anomaly_label']
     
-    # return model
+    # Train a RandomForestClassifier model
+    model = RandomForestClassifier(n_estimators=100, random_state=42)
+    model.fit(X, y)
+    
+    return model  # Return the trained model object
 
 def predict_anomalies(model, data):
     X = [[data.temperature, data.humidity]]

@@ -48,8 +48,10 @@ async def train_node_model(node_id: str):
         historical_data = get_historical_data(node_id)
         if not historical_data:
             raise HTTPException(status_code=404, detail="No historical data found for the specified node_id")
+        
         model = train_ml_model(historical_data)
-        store_ml_model(node_id, model)
+        model_blob = pickle.dumps(model)  # Serialize the model
+        store_ml_model(node_id, model_blob)  # Store the serialized model
         return {"status": "success"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

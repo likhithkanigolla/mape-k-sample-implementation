@@ -120,11 +120,11 @@ def get_thresholds(node_id):
 #         return None
 
 def store_ml_model(node_id, model):
-    model_filename = f"{node_id}_model.pkl"
+    model_filename = f"ml-models/{node_id}_model.pkl"
     joblib.dump(model, model_filename)
     
 def get_ml_model(node_id):
-    model_filename = f"{node_id}_model.pkl"
+    model_filename = f"ml-models/{node_id}_model.pkl"
     try:
         model = joblib.load(model_filename)
         return model
