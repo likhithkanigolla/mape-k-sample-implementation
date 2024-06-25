@@ -4,7 +4,7 @@ from app.monitor import monitor
 from app.analyze import analyze
 from app.plan import plan
 from app.execute import execute
-from app.knowledge import update_knowledge
+from app.knowledge import get_all_data
 
 app = FastAPI()
 
@@ -21,5 +21,13 @@ async def receive_data(data: IoTNodeData):
         plan_result = plan(analysis_result)
         execute(plan_result)
         return {"status": "success"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/iot/data")
+async def get_data():
+    try:
+        data = get_all_data()
+        return {"status": "success", "data": data}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
