@@ -1,9 +1,6 @@
-import pickle
-from typing import List, Dict
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from pydantic import BaseModel
-from app.knowledge import store_ml_model
 
 
 class IoTNodeData(BaseModel):

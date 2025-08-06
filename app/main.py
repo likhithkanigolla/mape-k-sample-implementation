@@ -5,7 +5,7 @@ from app.monitor import monitor
 from app.analyze import analyze
 from app.plan import plan
 from app.execute import execute
-from app.knowledge import set_thresholds, store_ml_model, get_historical_data, update_knowledge, get_all_node_ids, get_thresholds,get_node_ids
+from app.knowledge import set_thresholds, store_ml_model, get_historical_data, update_knowledge, get_all_node_ids, get_thresholds, get_node_ids, get_ml_model
 from app.ml_model import train_ml_model
 import pickle
 
@@ -26,9 +26,13 @@ class Thresholds(BaseModel):
 @app.post("/iot/data")
 async def receive_data(data: IoTNodeData):
     try:
+        # Monitor: Store the data
         monitor(data)
+        # Analyze: Analyze the new data
         analysis_result = analyze(data)
+        # Plan: Decide what to do based on analysis
         plan_result = plan(analysis_result)
+        # Execute: Carry out the plan
         execute(plan_result)
         return {"status": "success"}
     except Exception as e:
@@ -48,10 +52,8 @@ async def train_node_model(node_id: str):
         historical_data = get_historical_data(node_id)
         if not historical_data:
             raise HTTPException(status_code=404, detail="No historical data found for the specified node_id")
-        
         model = train_ml_model(historical_data)
-        model_blob = pickle.dumps(model)  # Serialize the model
-        store_ml_model(node_id, model_blob)  # Store the serialized model
+        store_ml_model(node_id, model)  # Store the model using joblib
         return {"status": "success"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -92,13 +94,14 @@ async def get_thresholds_values(node_id: str):
         raise HTTPException(status_code=500, detail=str(e))
 
 def scheduled_retraining():
-    node_ids = get_all_node_ids()
-    for node_id in node_ids:
+    node_ids = get_node_ids()
+    for node_id_tuple in node_ids:
+        node_id = node_id_tuple[0] if isinstance(node_id_tuple, (tuple, list)) else node_id_tuple
         try:
             historical_data = get_historical_data(node_id)
             if historical_data:
-                model_blob = train_ml_model(historical_data)
-                store_ml_model(node_id, model_blob)
+                model = train_ml_model(historical_data)
+                store_ml_model(node_id, model)
                 print(f"Model retrained for node {node_id}")
         except Exception as e:
             print(f"Error retraining model for node {node_id}: {str(e)}")
