@@ -2,3 +2,8 @@ fastapi
 uvicorn
 pydantic
 APScheduler
+joblib
+psycopg2
+pandas
+scikit-learn
+requests
