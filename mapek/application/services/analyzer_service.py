@@ -39,8 +39,12 @@ class Analyzer:
                         node_result[key] = status
                         if status == 0:
                             bad_count += 1
+                            quality_score -= 0.15  # Reduce quality score for each threshold violation
                     else:
                         node_result[key] = 1
+                
+                # Ensure quality score doesn't go below 0
+                quality_score = max(0.0, quality_score)
                 
                 # Fix state determination logic - prioritize bad_count over quality_score
                 if bad_count >= 3:

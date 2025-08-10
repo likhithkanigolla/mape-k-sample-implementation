@@ -807,3 +807,206 @@ water_level
 2025-08-10 23:32:15,268 INFO:MAPE-K System:[MAPE-K] Plans selected: [{'node_id': 'motor_1', 'plan': (1, 'WL001', 'motor_1', 'turn_on_motor', '{"condition": "water_level_low"}', 1, 'alert', 'Motor Start when OHT below minimum', datetime.datetime(2025, 8, 8, 1, 39, 9, 867602))}, {'node_id': 'water_flow_1', 'plan': (1, 'WL001', 'motor_1', 'turn_on_motor', '{"condition": "water_level_low"}', 1, 'alert', 'Motor Start when OHT below minimum', datetime.datetime(2025, 8, 8, 1, 39, 9, 867602))}]
 2025-08-10 23:32:15,268 INFO:MAPE-K System:[MAPE-K] Executing plans...
 2025-08-10 23:32:15,269 INFO:MAPE-K System:[MAPE-K] Execution complete.
+2025-08-10 23:33:15,270 INFO:MAPE-K System:[MAPE-K] Monitoring sensors...
+2025-08-10 23:33:15,291 INFO:MAPE-K System:Raw DB row for motor_1 (motor): (datetime.datetime(2025, 8, 10, 23, 32, 20, 748539), 'ON', 232.04, 8.76, 661.68, 76.38, 50.91, 0.99)
+2025-08-10 23:33:15,300 INFO:MAPE-K System:Raw DB row for water_flow_1 (water_flow): (datetime.datetime(2025, 8, 10, 23, 32, 20, 700948), 6.52, 775.71, 1.16, 2.4)
+2025-08-10 23:33:15,303 INFO:MAPE-K System:Raw DB row for water_level_1 (water_level): (datetime.datetime(2025, 8, 10, 23, 32, 20, 722669), -2.51, 52.71)
+2025-08-10 23:33:15,307 INFO:MAPE-K System:Raw DB row for water_quality_1 (water_quality): (datetime.datetime(2025, 8, 10, 23, 32, 20, 673092), 45.28, 4.71, 683.38, 999.22)
+2025-08-10 23:33:15,307 INFO:MAPE-K System:[MAPE-K] Sensor data: [{'node_id': 'motor_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 32, 20, 748539), 'status': 'ON', 'voltage': 232.04, 'current': 8.76, 'power': 661.68, 'energy': 76.38, 'frequency': 50.91, 'power_factor': 0.99}, {'node_id': 'water_flow_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 32, 20, 700948), 'flowrate': 6.52, 'total_flow': 775.71, 'pressure': 1.16, 'pressure_voltage': 2.4}, {'node_id': 'water_level_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 32, 20, 722669), 'water_level': -2.51, 'temperature': 52.71}, {'node_id': 'water_quality_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 32, 20, 673092), 'temperature': 45.28, 'tds_voltage': 4.71, 'uncompensated_tds': 683.38, 'compensated_tds': 999.22}]
+2025-08-10 23:33:15,307 INFO:MAPE-K System:[MAPE-K] Analyzing data...
+2025-08-10 23:33:15,309 INFO:MAPE-K System:Node motor_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:33:15,310 INFO:MAPE-K System:Node water_flow_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:33:15,310 ERROR:MAPE-K System:Analyzer error for node water_level_1: 1 validation error for SensorReading
+water_level
+  Value error, Water level must be between 0-500 cm [type=value_error, input_value=-2.51, input_type=float]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-10 23:33:15,311 INFO:MAPE-K System:Node water_quality_1: bad_count=2, quality_score=1.00, state=alert
+2025-08-10 23:33:15,311 INFO:MAPE-K System:[MAPE-K] Analysis result: [{'node_id': 'motor_1', 'status': 1, 'voltage': 1, 'current': 1, 'power': 1, 'energy': 1, 'frequency': 1, 'power_factor': 1, 'state': 'normal'}, {'node_id': 'water_flow_1', 'flowrate': 1, 'total_flow': 1, 'pressure': 1, 'pressure_voltage': 1, 'state': 'normal'}, {'node_id': 'water_quality_1', 'temperature': 0, 'tds_voltage': 1, 'uncompensated_tds': 1, 'compensated_tds': 0, 'state': 'alert'}]
+2025-08-10 23:33:15,311 INFO:MAPE-K System:[MAPE-K] Planning actions...
+2025-08-10 23:33:15,312 INFO:MAPE-K System:[MAPE-K] Plans selected: [{'node_id': 'water_quality_1', 'plan': (1, 'WL001', 'motor_1', 'turn_on_motor', '{"condition": "water_level_low"}', 1, 'alert', 'Motor Start when OHT below minimum', datetime.datetime(2025, 8, 8, 1, 39, 9, 867602))}]
+2025-08-10 23:33:15,312 INFO:MAPE-K System:[MAPE-K] Executing plans...
+2025-08-10 23:33:15,312 INFO:MAPE-K System:[MAPE-K] Execution complete.
+2025-08-10 23:34:15,314 INFO:MAPE-K System:[MAPE-K] Monitoring sensors...
+2025-08-10 23:34:15,335 INFO:MAPE-K System:Raw DB row for motor_1 (motor): (datetime.datetime(2025, 8, 10, 23, 33, 20, 779784), 'ON', 223.11, 1.35, 1791.59, 69.96, 49.63, 0.99)
+2025-08-10 23:34:15,345 INFO:MAPE-K System:Raw DB row for water_flow_1 (water_flow): (datetime.datetime(2025, 8, 10, 23, 33, 20, 747376), 2.83, 527.97, 1.69, 1.34)
+2025-08-10 23:34:15,349 INFO:MAPE-K System:Raw DB row for water_level_1 (water_level): (datetime.datetime(2025, 8, 10, 23, 33, 20, 762518), 1.4, 25.79)
+2025-08-10 23:34:15,352 INFO:MAPE-K System:Raw DB row for water_quality_1 (water_quality): (datetime.datetime(2025, 8, 10, 23, 33, 20, 729797), 28.22, 0.74, 122.71, 104.0)
+2025-08-10 23:34:15,352 INFO:MAPE-K System:[MAPE-K] Sensor data: [{'node_id': 'motor_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 33, 20, 779784), 'status': 'ON', 'voltage': 223.11, 'current': 1.35, 'power': 1791.59, 'energy': 69.96, 'frequency': 49.63, 'power_factor': 0.99}, {'node_id': 'water_flow_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 33, 20, 747376), 'flowrate': 2.83, 'total_flow': 527.97, 'pressure': 1.69, 'pressure_voltage': 1.34}, {'node_id': 'water_level_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 33, 20, 762518), 'water_level': 1.4, 'temperature': 25.79}, {'node_id': 'water_quality_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 33, 20, 729797), 'temperature': 28.22, 'tds_voltage': 0.74, 'uncompensated_tds': 122.71, 'compensated_tds': 104.0}]
+2025-08-10 23:34:15,352 INFO:MAPE-K System:[MAPE-K] Analyzing data...
+2025-08-10 23:34:15,354 INFO:MAPE-K System:Node motor_1: bad_count=1, quality_score=1.00, state=alert
+2025-08-10 23:34:15,355 INFO:MAPE-K System:Node water_flow_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:34:15,356 INFO:MAPE-K System:Node water_level_1: bad_count=1, quality_score=1.00, state=alert
+2025-08-10 23:34:15,357 INFO:MAPE-K System:Node water_quality_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:34:15,357 INFO:MAPE-K System:[MAPE-K] Analysis result: [{'node_id': 'motor_1', 'status': 1, 'voltage': 1, 'current': 0, 'power': 1, 'energy': 1, 'frequency': 1, 'power_factor': 1, 'state': 'alert'}, {'node_id': 'water_flow_1', 'flowrate': 1, 'total_flow': 1, 'pressure': 1, 'pressure_voltage': 1, 'state': 'normal'}, {'node_id': 'water_level_1', 'water_level': 0, 'temperature': 1, 'state': 'alert'}, {'node_id': 'water_quality_1', 'temperature': 1, 'tds_voltage': 1, 'uncompensated_tds': 1, 'compensated_tds': 1, 'state': 'normal'}]
+2025-08-10 23:34:15,357 INFO:MAPE-K System:[MAPE-K] Planning actions...
+2025-08-10 23:34:15,358 INFO:MAPE-K System:[MAPE-K] Plans selected: [{'node_id': 'motor_1', 'plan': (1, 'WL001', 'motor_1', 'turn_on_motor', '{"condition": "water_level_low"}', 1, 'alert', 'Motor Start when OHT below minimum', datetime.datetime(2025, 8, 8, 1, 39, 9, 867602))}, {'node_id': 'water_level_1', 'plan': (1, 'WL001', 'motor_1', 'turn_on_motor', '{"condition": "water_level_low"}', 1, 'alert', 'Motor Start when OHT below minimum', datetime.datetime(2025, 8, 8, 1, 39, 9, 867602))}]
+2025-08-10 23:34:15,358 INFO:MAPE-K System:[MAPE-K] Executing plans...
+2025-08-10 23:34:15,358 INFO:MAPE-K System:[MAPE-K] Execution complete.
+2025-08-10 23:35:15,360 INFO:MAPE-K System:[MAPE-K] Monitoring sensors...
+2025-08-10 23:35:15,377 INFO:MAPE-K System:Raw DB row for motor_1 (motor): (datetime.datetime(2025, 8, 10, 23, 34, 20, 803738), 'ON', 232.41, 1.96, 247.27, 99.78, 49.17, 0.94)
+2025-08-10 23:35:15,386 INFO:MAPE-K System:Raw DB row for water_flow_1 (water_flow): (datetime.datetime(2025, 8, 10, 23, 34, 20, 783047), 21.34, 2344.62, 8.9, 3.64)
+2025-08-10 23:35:15,394 INFO:MAPE-K System:Raw DB row for water_level_1 (water_level): (datetime.datetime(2025, 8, 10, 23, 34, 20, 793217), 8.96, 24.28)
+2025-08-10 23:35:15,403 INFO:MAPE-K System:Raw DB row for water_quality_1 (water_quality): (datetime.datetime(2025, 8, 10, 23, 34, 20, 771002), 27.18, 1.4, 338.53, 472.31)
+2025-08-10 23:35:15,403 INFO:MAPE-K System:[MAPE-K] Sensor data: [{'node_id': 'motor_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 34, 20, 803738), 'status': 'ON', 'voltage': 232.41, 'current': 1.96, 'power': 247.27, 'energy': 99.78, 'frequency': 49.17, 'power_factor': 0.94}, {'node_id': 'water_flow_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 34, 20, 783047), 'flowrate': 21.34, 'total_flow': 2344.62, 'pressure': 8.9, 'pressure_voltage': 3.64}, {'node_id': 'water_level_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 34, 20, 793217), 'water_level': 8.96, 'temperature': 24.28}, {'node_id': 'water_quality_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 34, 20, 771002), 'temperature': 27.18, 'tds_voltage': 1.4, 'uncompensated_tds': 338.53, 'compensated_tds': 472.31}]
+2025-08-10 23:35:15,403 INFO:MAPE-K System:[MAPE-K] Analyzing data...
+2025-08-10 23:35:15,406 INFO:MAPE-K System:Node motor_1: bad_count=1, quality_score=1.00, state=alert
+2025-08-10 23:35:15,407 INFO:MAPE-K System:Node water_flow_1: bad_count=2, quality_score=1.00, state=alert
+2025-08-10 23:35:15,409 INFO:MAPE-K System:Node water_level_1: bad_count=1, quality_score=1.00, state=alert
+2025-08-10 23:35:15,410 INFO:MAPE-K System:Node water_quality_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:35:15,411 INFO:MAPE-K System:[MAPE-K] Analysis result: [{'node_id': 'motor_1', 'status': 1, 'voltage': 1, 'current': 0, 'power': 1, 'energy': 1, 'frequency': 1, 'power_factor': 1, 'state': 'alert'}, {'node_id': 'water_flow_1', 'flowrate': 0, 'total_flow': 1, 'pressure': 0, 'pressure_voltage': 1, 'state': 'alert'}, {'node_id': 'water_level_1', 'water_level': 0, 'temperature': 1, 'state': 'alert'}, {'node_id': 'water_quality_1', 'temperature': 1, 'tds_voltage': 1, 'uncompensated_tds': 1, 'compensated_tds': 1, 'state': 'normal'}]
+2025-08-10 23:35:15,411 INFO:MAPE-K System:[MAPE-K] Planning actions...
+2025-08-10 23:35:15,413 INFO:MAPE-K System:[MAPE-K] Plans selected: [{'node_id': 'motor_1', 'plan': (1, 'WL001', 'motor_1', 'turn_on_motor', '{"condition": "water_level_low"}', 1, 'alert', 'Motor Start when OHT below minimum', datetime.datetime(2025, 8, 8, 1, 39, 9, 867602))}, {'node_id': 'water_flow_1', 'plan': (1, 'WL001', 'motor_1', 'turn_on_motor', '{"condition": "water_level_low"}', 1, 'alert', 'Motor Start when OHT below minimum', datetime.datetime(2025, 8, 8, 1, 39, 9, 867602))}, {'node_id': 'water_level_1', 'plan': (1, 'WL001', 'motor_1', 'turn_on_motor', '{"condition": "water_level_low"}', 1, 'alert', 'Motor Start when OHT below minimum', datetime.datetime(2025, 8, 8, 1, 39, 9, 867602))}]
+2025-08-10 23:35:15,413 INFO:MAPE-K System:[MAPE-K] Executing plans...
+2025-08-10 23:35:15,413 INFO:MAPE-K System:[MAPE-K] Execution complete.
+2025-08-10 23:36:15,415 INFO:MAPE-K System:[MAPE-K] Monitoring sensors...
+2025-08-10 23:36:15,444 INFO:MAPE-K System:Raw DB row for motor_1 (motor): (datetime.datetime(2025, 8, 10, 23, 35, 20, 859970), 'OFF', 239.95, 1.18, 580.06, 43.04, 49.68, 0.97)
+2025-08-10 23:36:15,452 INFO:MAPE-K System:Raw DB row for water_flow_1 (water_flow): (datetime.datetime(2025, 8, 10, 23, 35, 20, 839310), 21.01, 2949.47, 9.42, 4.68)
+2025-08-10 23:36:15,458 INFO:MAPE-K System:Raw DB row for water_level_1 (water_level): (datetime.datetime(2025, 8, 10, 23, 35, 20, 849759), 1.86, 20.31)
+2025-08-10 23:36:15,462 INFO:MAPE-K System:Raw DB row for water_quality_1 (water_quality): (datetime.datetime(2025, 8, 10, 23, 35, 20, 826713), 25.35, 1.99, 374.58, 486.27)
+2025-08-10 23:36:15,462 INFO:MAPE-K System:[MAPE-K] Sensor data: [{'node_id': 'motor_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 35, 20, 859970), 'status': 'OFF', 'voltage': 239.95, 'current': 1.18, 'power': 580.06, 'energy': 43.04, 'frequency': 49.68, 'power_factor': 0.97}, {'node_id': 'water_flow_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 35, 20, 839310), 'flowrate': 21.01, 'total_flow': 2949.47, 'pressure': 9.42, 'pressure_voltage': 4.68}, {'node_id': 'water_level_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 35, 20, 849759), 'water_level': 1.86, 'temperature': 20.31}, {'node_id': 'water_quality_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 35, 20, 826713), 'temperature': 25.35, 'tds_voltage': 1.99, 'uncompensated_tds': 374.58, 'compensated_tds': 486.27}]
+2025-08-10 23:36:15,462 INFO:MAPE-K System:[MAPE-K] Analyzing data...
+2025-08-10 23:36:15,464 INFO:MAPE-K System:Node motor_1: bad_count=1, quality_score=1.00, state=alert
+2025-08-10 23:36:15,465 INFO:MAPE-K System:Node water_flow_1: bad_count=2, quality_score=1.00, state=alert
+2025-08-10 23:36:15,465 INFO:MAPE-K System:Node water_level_1: bad_count=1, quality_score=1.00, state=alert
+2025-08-10 23:36:15,466 INFO:MAPE-K System:Node water_quality_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:36:15,466 INFO:MAPE-K System:[MAPE-K] Analysis result: [{'node_id': 'motor_1', 'status': 1, 'voltage': 1, 'current': 0, 'power': 1, 'energy': 1, 'frequency': 1, 'power_factor': 1, 'state': 'alert'}, {'node_id': 'water_flow_1', 'flowrate': 0, 'total_flow': 1, 'pressure': 0, 'pressure_voltage': 1, 'state': 'alert'}, {'node_id': 'water_level_1', 'water_level': 0, 'temperature': 1, 'state': 'alert'}, {'node_id': 'water_quality_1', 'temperature': 1, 'tds_voltage': 1, 'uncompensated_tds': 1, 'compensated_tds': 1, 'state': 'normal'}]
+2025-08-10 23:36:15,466 INFO:MAPE-K System:[MAPE-K] Planning actions...
+2025-08-10 23:36:15,468 INFO:MAPE-K System:[MAPE-K] Plans selected: [{'node_id': 'motor_1', 'plan': (1, 'WL001', 'motor_1', 'turn_on_motor', '{"condition": "water_level_low"}', 1, 'alert', 'Motor Start when OHT below minimum', datetime.datetime(2025, 8, 8, 1, 39, 9, 867602))}, {'node_id': 'water_flow_1', 'plan': (1, 'WL001', 'motor_1', 'turn_on_motor', '{"condition": "water_level_low"}', 1, 'alert', 'Motor Start when OHT below minimum', datetime.datetime(2025, 8, 8, 1, 39, 9, 867602))}, {'node_id': 'water_level_1', 'plan': (1, 'WL001', 'motor_1', 'turn_on_motor', '{"condition": "water_level_low"}', 1, 'alert', 'Motor Start when OHT below minimum', datetime.datetime(2025, 8, 8, 1, 39, 9, 867602))}]
+2025-08-10 23:36:15,468 INFO:MAPE-K System:[MAPE-K] Executing plans...
+2025-08-10 23:36:15,468 INFO:MAPE-K System:[MAPE-K] Execution complete.
+2025-08-10 23:37:15,469 INFO:MAPE-K System:[MAPE-K] Monitoring sensors...
+2025-08-10 23:37:15,491 INFO:MAPE-K System:Raw DB row for motor_1 (motor): (datetime.datetime(2025, 8, 10, 23, 36, 20, 921874), 'OFF', 236.93, 1.08, 1865.16, 44.66, 49.15, 0.82)
+2025-08-10 23:37:15,499 INFO:MAPE-K System:Raw DB row for water_flow_1 (water_flow): (datetime.datetime(2025, 8, 10, 23, 36, 20, 895382), 4.4, 372.29, 1.13, 1.9)
+2025-08-10 23:37:15,504 INFO:MAPE-K System:Raw DB row for water_level_1 (water_level): (datetime.datetime(2025, 8, 10, 23, 36, 20, 910597), 2.85, 22.18)
+2025-08-10 23:37:15,508 INFO:MAPE-K System:Raw DB row for water_quality_1 (water_quality): (datetime.datetime(2025, 8, 10, 23, 36, 20, 878917), 58.15, 4.75, 842.26, 903.11)
+2025-08-10 23:37:15,508 INFO:MAPE-K System:[MAPE-K] Sensor data: [{'node_id': 'motor_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 36, 20, 921874), 'status': 'OFF', 'voltage': 236.93, 'current': 1.08, 'power': 1865.16, 'energy': 44.66, 'frequency': 49.15, 'power_factor': 0.82}, {'node_id': 'water_flow_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 36, 20, 895382), 'flowrate': 4.4, 'total_flow': 372.29, 'pressure': 1.13, 'pressure_voltage': 1.9}, {'node_id': 'water_level_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 36, 20, 910597), 'water_level': 2.85, 'temperature': 22.18}, {'node_id': 'water_quality_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 36, 20, 878917), 'temperature': 58.15, 'tds_voltage': 4.75, 'uncompensated_tds': 842.26, 'compensated_tds': 903.11}]
+2025-08-10 23:37:15,508 INFO:MAPE-K System:[MAPE-K] Analyzing data...
+2025-08-10 23:37:15,510 INFO:MAPE-K System:Node motor_1: bad_count=1, quality_score=1.00, state=alert
+2025-08-10 23:37:15,511 INFO:MAPE-K System:Node water_flow_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:37:15,511 INFO:MAPE-K System:Node water_level_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:37:15,512 INFO:MAPE-K System:Node water_quality_1: bad_count=2, quality_score=1.00, state=alert
+2025-08-10 23:37:15,512 INFO:MAPE-K System:[MAPE-K] Analysis result: [{'node_id': 'motor_1', 'status': 1, 'voltage': 1, 'current': 0, 'power': 1, 'energy': 1, 'frequency': 1, 'power_factor': 1, 'state': 'alert'}, {'node_id': 'water_flow_1', 'flowrate': 1, 'total_flow': 1, 'pressure': 1, 'pressure_voltage': 1, 'state': 'normal'}, {'node_id': 'water_level_1', 'water_level': 1, 'temperature': 1, 'state': 'normal'}, {'node_id': 'water_quality_1', 'temperature': 0, 'tds_voltage': 1, 'uncompensated_tds': 1, 'compensated_tds': 0, 'state': 'alert'}]
+2025-08-10 23:37:15,512 INFO:MAPE-K System:[MAPE-K] Planning actions...
+2025-08-10 23:37:15,513 INFO:MAPE-K System:[MAPE-K] Plans selected: [{'node_id': 'motor_1', 'plan': (1, 'WL001', 'motor_1', 'turn_on_motor', '{"condition": "water_level_low"}', 1, 'alert', 'Motor Start when OHT below minimum', datetime.datetime(2025, 8, 8, 1, 39, 9, 867602))}, {'node_id': 'water_quality_1', 'plan': (1, 'WL001', 'motor_1', 'turn_on_motor', '{"condition": "water_level_low"}', 1, 'alert', 'Motor Start when OHT below minimum', datetime.datetime(2025, 8, 8, 1, 39, 9, 867602))}]
+2025-08-10 23:37:15,513 INFO:MAPE-K System:[MAPE-K] Executing plans...
+2025-08-10 23:37:15,514 INFO:MAPE-K System:[MAPE-K] Execution complete.
+2025-08-10 23:38:15,515 INFO:MAPE-K System:[MAPE-K] Monitoring sensors...
+2025-08-10 23:38:15,536 INFO:MAPE-K System:Raw DB row for motor_1 (motor): (datetime.datetime(2025, 8, 10, 23, 37, 20, 966148), 'OFF', 226.37, 7.0, 812.71, 21.73, 49.38, 0.86)
+2025-08-10 23:38:15,544 INFO:MAPE-K System:Raw DB row for water_flow_1 (water_flow): (datetime.datetime(2025, 8, 10, 23, 37, 20, 942226), 20.39, 2956.47, 6.66, 4.17)
+2025-08-10 23:38:15,552 INFO:MAPE-K System:Raw DB row for water_level_1 (water_level): (datetime.datetime(2025, 8, 10, 23, 37, 20, 954106), 4.46, 28.63)
+2025-08-10 23:38:15,556 INFO:MAPE-K System:Raw DB row for water_quality_1 (water_quality): (datetime.datetime(2025, 8, 10, 23, 37, 20, 923869), 26.29, 2.44, 315.01, 313.16)
+2025-08-10 23:38:15,556 INFO:MAPE-K System:[MAPE-K] Sensor data: [{'node_id': 'motor_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 37, 20, 966148), 'status': 'OFF', 'voltage': 226.37, 'current': 7.0, 'power': 812.71, 'energy': 21.73, 'frequency': 49.38, 'power_factor': 0.86}, {'node_id': 'water_flow_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 37, 20, 942226), 'flowrate': 20.39, 'total_flow': 2956.47, 'pressure': 6.66, 'pressure_voltage': 4.17}, {'node_id': 'water_level_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 37, 20, 954106), 'water_level': 4.46, 'temperature': 28.63}, {'node_id': 'water_quality_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 37, 20, 923869), 'temperature': 26.29, 'tds_voltage': 2.44, 'uncompensated_tds': 315.01, 'compensated_tds': 313.16}]
+2025-08-10 23:38:15,556 INFO:MAPE-K System:[MAPE-K] Analyzing data...
+2025-08-10 23:38:15,558 INFO:MAPE-K System:Node motor_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:38:15,559 INFO:MAPE-K System:Node water_flow_1: bad_count=2, quality_score=1.00, state=alert
+2025-08-10 23:38:15,560 INFO:MAPE-K System:Node water_level_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:38:15,561 INFO:MAPE-K System:Node water_quality_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:38:15,561 INFO:MAPE-K System:[MAPE-K] Analysis result: [{'node_id': 'motor_1', 'status': 1, 'voltage': 1, 'current': 1, 'power': 1, 'energy': 1, 'frequency': 1, 'power_factor': 1, 'state': 'normal'}, {'node_id': 'water_flow_1', 'flowrate': 0, 'total_flow': 1, 'pressure': 0, 'pressure_voltage': 1, 'state': 'alert'}, {'node_id': 'water_level_1', 'water_level': 1, 'temperature': 1, 'state': 'normal'}, {'node_id': 'water_quality_1', 'temperature': 1, 'tds_voltage': 1, 'uncompensated_tds': 1, 'compensated_tds': 1, 'state': 'normal'}]
+2025-08-10 23:38:15,561 INFO:MAPE-K System:[MAPE-K] Planning actions...
+2025-08-10 23:38:15,562 INFO:MAPE-K System:[MAPE-K] Plans selected: [{'node_id': 'water_flow_1', 'plan': (1, 'WL001', 'motor_1', 'turn_on_motor', '{"condition": "water_level_low"}', 1, 'alert', 'Motor Start when OHT below minimum', datetime.datetime(2025, 8, 8, 1, 39, 9, 867602))}]
+2025-08-10 23:38:15,562 INFO:MAPE-K System:[MAPE-K] Executing plans...
+2025-08-10 23:38:15,562 INFO:MAPE-K System:[MAPE-K] Execution complete.
+2025-08-10 23:39:15,563 INFO:MAPE-K System:[MAPE-K] Monitoring sensors...
+2025-08-10 23:39:15,581 INFO:MAPE-K System:Raw DB row for motor_1 (motor): (datetime.datetime(2025, 8, 10, 23, 38, 21, 20401), 'OFF', 187.02, 15.8, 2107.49, 191.67, 45.95, 0.51)
+2025-08-10 23:39:15,593 INFO:MAPE-K System:Raw DB row for water_flow_1 (water_flow): (datetime.datetime(2025, 8, 10, 23, 38, 20, 989796), 1.81, 141.63, 4.95, 1.18)
+2025-08-10 23:39:15,599 INFO:MAPE-K System:Raw DB row for water_level_1 (water_level): (datetime.datetime(2025, 8, 10, 23, 38, 21, 5635), 5.1, 26.01)
+2025-08-10 23:39:15,604 INFO:MAPE-K System:Raw DB row for water_quality_1 (water_quality): (datetime.datetime(2025, 8, 10, 23, 38, 20, 969097), 20.6, 1.32, 313.65, 239.87)
+2025-08-10 23:39:15,604 INFO:MAPE-K System:[MAPE-K] Sensor data: [{'node_id': 'motor_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 38, 21, 20401), 'status': 'OFF', 'voltage': 187.02, 'current': 15.8, 'power': 2107.49, 'energy': 191.67, 'frequency': 45.95, 'power_factor': 0.51}, {'node_id': 'water_flow_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 38, 20, 989796), 'flowrate': 1.81, 'total_flow': 141.63, 'pressure': 4.95, 'pressure_voltage': 1.18}, {'node_id': 'water_level_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 38, 21, 5635), 'water_level': 5.1, 'temperature': 26.01}, {'node_id': 'water_quality_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 38, 20, 969097), 'temperature': 20.6, 'tds_voltage': 1.32, 'uncompensated_tds': 313.65, 'compensated_tds': 239.87}]
+2025-08-10 23:39:15,605 INFO:MAPE-K System:[MAPE-K] Analyzing data...
+2025-08-10 23:39:15,606 INFO:MAPE-K System:Node motor_1: bad_count=3, quality_score=1.00, state=emergency
+2025-08-10 23:39:15,607 INFO:MAPE-K System:Node water_flow_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:39:15,608 INFO:MAPE-K System:Node water_level_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:39:15,609 INFO:MAPE-K System:Node water_quality_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:39:15,609 INFO:MAPE-K System:[MAPE-K] Analysis result: [{'node_id': 'motor_1', 'status': 1, 'voltage': 0, 'current': 0, 'power': 1, 'energy': 1, 'frequency': 1, 'power_factor': 0, 'state': 'emergency'}, {'node_id': 'water_flow_1', 'flowrate': 1, 'total_flow': 1, 'pressure': 1, 'pressure_voltage': 1, 'state': 'normal'}, {'node_id': 'water_level_1', 'water_level': 1, 'temperature': 1, 'state': 'normal'}, {'node_id': 'water_quality_1', 'temperature': 1, 'tds_voltage': 1, 'uncompensated_tds': 1, 'compensated_tds': 1, 'state': 'normal'}]
+2025-08-10 23:39:15,609 INFO:MAPE-K System:[MAPE-K] Planning actions...
+2025-08-10 23:39:15,610 INFO:MAPE-K System:[MAPE-K] Plans selected: [{'node_id': 'motor_1', 'plan': (3, 'WL003', 'motor_1', 'emergency_stop', '{"condition": "safety_threshold_exceeded"}', 1, 'emergency', 'Emergency Motor Stop and Alarm', datetime.datetime(2025, 8, 8, 1, 39, 9, 867602))}]
+2025-08-10 23:39:15,610 INFO:MAPE-K System:[MAPE-K] Executing plans...
+2025-08-10 23:39:15,610 INFO:MAPE-K System:[MAPE-K] Execution complete.
+2025-08-10 23:40:15,612 INFO:MAPE-K System:[MAPE-K] Monitoring sensors...
+2025-08-10 23:40:15,639 INFO:MAPE-K System:Raw DB row for motor_1 (motor): (datetime.datetime(2025, 8, 10, 23, 39, 21, 60644), 'OFF', 225.63, 1.51, 1308.32, 78.14, 50.06, 0.9)
+2025-08-10 23:40:15,650 INFO:MAPE-K System:Raw DB row for water_flow_1 (water_flow): (datetime.datetime(2025, 8, 10, 23, 39, 21, 32369), 7.54, 961.74, 4.27, 0.99)
+2025-08-10 23:40:15,657 INFO:MAPE-K System:Raw DB row for water_level_1 (water_level): (datetime.datetime(2025, 8, 10, 23, 39, 21, 46634), 8.19, 23.49)
+2025-08-10 23:40:15,663 INFO:MAPE-K System:Raw DB row for water_quality_1 (water_quality): (datetime.datetime(2025, 8, 10, 23, 39, 21, 16522), 25.07, 0.74, 390.52, 215.58)
+2025-08-10 23:40:15,664 INFO:MAPE-K System:[MAPE-K] Sensor data: [{'node_id': 'motor_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 39, 21, 60644), 'status': 'OFF', 'voltage': 225.63, 'current': 1.51, 'power': 1308.32, 'energy': 78.14, 'frequency': 50.06, 'power_factor': 0.9}, {'node_id': 'water_flow_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 39, 21, 32369), 'flowrate': 7.54, 'total_flow': 961.74, 'pressure': 4.27, 'pressure_voltage': 0.99}, {'node_id': 'water_level_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 39, 21, 46634), 'water_level': 8.19, 'temperature': 23.49}, {'node_id': 'water_quality_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 39, 21, 16522), 'temperature': 25.07, 'tds_voltage': 0.74, 'uncompensated_tds': 390.52, 'compensated_tds': 215.58}]
+2025-08-10 23:40:15,664 INFO:MAPE-K System:[MAPE-K] Analyzing data...
+2025-08-10 23:40:15,666 INFO:MAPE-K System:Node motor_1: bad_count=1, quality_score=1.00, state=alert
+2025-08-10 23:40:15,667 INFO:MAPE-K System:Node water_flow_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:40:15,668 INFO:MAPE-K System:Node water_level_1: bad_count=1, quality_score=1.00, state=alert
+2025-08-10 23:40:15,669 INFO:MAPE-K System:Node water_quality_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:40:15,669 INFO:MAPE-K System:[MAPE-K] Analysis result: [{'node_id': 'motor_1', 'status': 1, 'voltage': 1, 'current': 0, 'power': 1, 'energy': 1, 'frequency': 1, 'power_factor': 1, 'state': 'alert'}, {'node_id': 'water_flow_1', 'flowrate': 1, 'total_flow': 1, 'pressure': 1, 'pressure_voltage': 1, 'state': 'normal'}, {'node_id': 'water_level_1', 'water_level': 0, 'temperature': 1, 'state': 'alert'}, {'node_id': 'water_quality_1', 'temperature': 1, 'tds_voltage': 1, 'uncompensated_tds': 1, 'compensated_tds': 1, 'state': 'normal'}]
+2025-08-10 23:40:15,669 INFO:MAPE-K System:[MAPE-K] Planning actions...
+2025-08-10 23:40:15,670 INFO:MAPE-K System:[MAPE-K] Plans selected: [{'node_id': 'motor_1', 'plan': (1, 'WL001', 'motor_1', 'turn_on_motor', '{"condition": "water_level_low"}', 1, 'alert', 'Motor Start when OHT below minimum', datetime.datetime(2025, 8, 8, 1, 39, 9, 867602))}, {'node_id': 'water_level_1', 'plan': (1, 'WL001', 'motor_1', 'turn_on_motor', '{"condition": "water_level_low"}', 1, 'alert', 'Motor Start when OHT below minimum', datetime.datetime(2025, 8, 8, 1, 39, 9, 867602))}]
+2025-08-10 23:40:15,670 INFO:MAPE-K System:[MAPE-K] Executing plans...
+2025-08-10 23:40:15,671 INFO:MAPE-K System:[MAPE-K] Execution complete.
+2025-08-10 23:41:15,673 INFO:MAPE-K System:[MAPE-K] Monitoring sensors...
+2025-08-10 23:41:15,689 INFO:MAPE-K System:Raw DB row for motor_1 (motor): (datetime.datetime(2025, 8, 10, 23, 40, 21, 171197), 'OFF', 209.2, 16.83, 2615.3, 159.41, 45.78, 0.52)
+2025-08-10 23:41:15,697 INFO:MAPE-K System:Raw DB row for water_flow_1 (water_flow): (datetime.datetime(2025, 8, 10, 23, 40, 21, 129645), 4.38, 735.3, 3.24, 2.15)
+2025-08-10 23:41:15,705 INFO:MAPE-K System:Raw DB row for water_level_1 (water_level): (datetime.datetime(2025, 8, 10, 23, 40, 21, 153038), 9.14, 24.85)
+2025-08-10 23:41:15,713 INFO:MAPE-K System:Raw DB row for water_quality_1 (water_quality): (datetime.datetime(2025, 8, 10, 23, 40, 21, 92002), 20.83, 2.43, 124.31, 423.91)
+2025-08-10 23:41:15,713 INFO:MAPE-K System:[MAPE-K] Sensor data: [{'node_id': 'motor_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 40, 21, 171197), 'status': 'OFF', 'voltage': 209.2, 'current': 16.83, 'power': 2615.3, 'energy': 159.41, 'frequency': 45.78, 'power_factor': 0.52}, {'node_id': 'water_flow_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 40, 21, 129645), 'flowrate': 4.38, 'total_flow': 735.3, 'pressure': 3.24, 'pressure_voltage': 2.15}, {'node_id': 'water_level_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 40, 21, 153038), 'water_level': 9.14, 'temperature': 24.85}, {'node_id': 'water_quality_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 40, 21, 92002), 'temperature': 20.83, 'tds_voltage': 2.43, 'uncompensated_tds': 124.31, 'compensated_tds': 423.91}]
+2025-08-10 23:41:15,713 INFO:MAPE-K System:[MAPE-K] Analyzing data...
+2025-08-10 23:41:15,716 INFO:MAPE-K System:Node motor_1: bad_count=3, quality_score=1.00, state=emergency
+2025-08-10 23:41:15,717 INFO:MAPE-K System:Node water_flow_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:41:15,718 INFO:MAPE-K System:Node water_level_1: bad_count=1, quality_score=1.00, state=alert
+2025-08-10 23:41:15,718 INFO:MAPE-K System:Node water_quality_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:41:15,718 INFO:MAPE-K System:[MAPE-K] Analysis result: [{'node_id': 'motor_1', 'status': 1, 'voltage': 0, 'current': 0, 'power': 1, 'energy': 1, 'frequency': 1, 'power_factor': 0, 'state': 'emergency'}, {'node_id': 'water_flow_1', 'flowrate': 1, 'total_flow': 1, 'pressure': 1, 'pressure_voltage': 1, 'state': 'normal'}, {'node_id': 'water_level_1', 'water_level': 0, 'temperature': 1, 'state': 'alert'}, {'node_id': 'water_quality_1', 'temperature': 1, 'tds_voltage': 1, 'uncompensated_tds': 1, 'compensated_tds': 1, 'state': 'normal'}]
+2025-08-10 23:41:15,718 INFO:MAPE-K System:[MAPE-K] Planning actions...
+2025-08-10 23:41:15,719 INFO:MAPE-K System:[MAPE-K] Plans selected: [{'node_id': 'motor_1', 'plan': (3, 'WL003', 'motor_1', 'emergency_stop', '{"condition": "safety_threshold_exceeded"}', 1, 'emergency', 'Emergency Motor Stop and Alarm', datetime.datetime(2025, 8, 8, 1, 39, 9, 867602))}, {'node_id': 'water_level_1', 'plan': (1, 'WL001', 'motor_1', 'turn_on_motor', '{"condition": "water_level_low"}', 1, 'alert', 'Motor Start when OHT below minimum', datetime.datetime(2025, 8, 8, 1, 39, 9, 867602))}]
+2025-08-10 23:41:15,720 INFO:MAPE-K System:[MAPE-K] Executing plans...
+2025-08-10 23:41:15,720 INFO:MAPE-K System:[MAPE-K] Execution complete.
+2025-08-10 23:41:53,531 INFO:MAPE-K System:Raw DB row for motor_1 (motor): (datetime.datetime(2025, 8, 10, 23, 41, 40, 152047), 'OFF', 235.79, 5.72, 573.32, 62.65, 49.68, 0.93)
+2025-08-10 23:41:53,542 INFO:MAPE-K System:Raw DB row for water_flow_1 (water_flow): (datetime.datetime(2025, 8, 10, 23, 41, 40, 177507), 9.6, 283.0, 2.9, 1.5)
+2025-08-10 23:41:53,546 INFO:MAPE-K System:Raw DB row for water_level_1 (water_level): (datetime.datetime(2025, 8, 10, 23, 41, 40, 133643), 4.36, 20.9)
+2025-08-10 23:41:53,551 INFO:MAPE-K System:Raw DB row for water_quality_1 (water_quality): (datetime.datetime(2025, 8, 10, 23, 41, 40, 165550), 59.89, 3.79, 980.45, 671.61)
+2025-08-10 23:41:53,553 INFO:MAPE-K System:Node motor_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:41:53,554 INFO:MAPE-K System:Node water_flow_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:41:53,554 INFO:MAPE-K System:Node water_level_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:41:53,556 INFO:MAPE-K System:Node water_quality_1: bad_count=2, quality_score=0.70, state=alert
+2025-08-10 23:42:10,415 INFO:MAPE-K System:Raw DB row for motor_1 (motor): (datetime.datetime(2025, 8, 10, 23, 41, 40, 152047), 'OFF', 235.79, 5.72, 573.32, 62.65, 49.68, 0.93)
+2025-08-10 23:42:10,424 INFO:MAPE-K System:Raw DB row for water_flow_1 (water_flow): (datetime.datetime(2025, 8, 10, 23, 41, 40, 177507), 9.6, 283.0, 2.9, 1.5)
+2025-08-10 23:42:10,430 INFO:MAPE-K System:Raw DB row for water_level_1 (water_level): (datetime.datetime(2025, 8, 10, 23, 41, 40, 133643), 4.36, 20.9)
+2025-08-10 23:42:10,433 INFO:MAPE-K System:Raw DB row for water_quality_1 (water_quality): (datetime.datetime(2025, 8, 10, 23, 41, 40, 165550), 59.89, 3.79, 980.45, 671.61)
+2025-08-10 23:42:10,435 INFO:MAPE-K System:Node motor_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:42:10,437 INFO:MAPE-K System:Node water_flow_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:42:10,437 INFO:MAPE-K System:Node water_level_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:42:10,438 INFO:MAPE-K System:Node water_quality_1: bad_count=2, quality_score=0.70, state=alert
+2025-08-10 23:42:15,722 INFO:MAPE-K System:[MAPE-K] Monitoring sensors...
+2025-08-10 23:42:15,741 INFO:MAPE-K System:Raw DB row for motor_1 (motor): (datetime.datetime(2025, 8, 10, 23, 41, 40, 152047), 'OFF', 235.79, 5.72, 573.32, 62.65, 49.68, 0.93)
+2025-08-10 23:42:15,750 INFO:MAPE-K System:Raw DB row for water_flow_1 (water_flow): (datetime.datetime(2025, 8, 10, 23, 41, 40, 177507), 9.6, 283.0, 2.9, 1.5)
+2025-08-10 23:42:15,756 INFO:MAPE-K System:Raw DB row for water_level_1 (water_level): (datetime.datetime(2025, 8, 10, 23, 41, 40, 133643), 4.36, 20.9)
+2025-08-10 23:42:15,759 INFO:MAPE-K System:Raw DB row for water_quality_1 (water_quality): (datetime.datetime(2025, 8, 10, 23, 41, 40, 165550), 59.89, 3.79, 980.45, 671.61)
+2025-08-10 23:42:15,759 INFO:MAPE-K System:[MAPE-K] Sensor data: [{'node_id': 'motor_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 41, 40, 152047), 'status': 'OFF', 'voltage': 235.79, 'current': 5.72, 'power': 573.32, 'energy': 62.65, 'frequency': 49.68, 'power_factor': 0.93}, {'node_id': 'water_flow_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 41, 40, 177507), 'flowrate': 9.6, 'total_flow': 283.0, 'pressure': 2.9, 'pressure_voltage': 1.5}, {'node_id': 'water_level_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 41, 40, 133643), 'water_level': 4.36, 'temperature': 20.9}, {'node_id': 'water_quality_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 41, 40, 165550), 'temperature': 59.89, 'tds_voltage': 3.79, 'uncompensated_tds': 980.45, 'compensated_tds': 671.61}]
+2025-08-10 23:42:15,759 INFO:MAPE-K System:[MAPE-K] Analyzing data...
+2025-08-10 23:42:15,760 INFO:MAPE-K System:Node motor_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:42:15,761 INFO:MAPE-K System:Node water_flow_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:42:15,762 INFO:MAPE-K System:Node water_level_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:42:15,763 INFO:MAPE-K System:Node water_quality_1: bad_count=2, quality_score=1.00, state=alert
+2025-08-10 23:42:15,763 INFO:MAPE-K System:[MAPE-K] Analysis result: [{'node_id': 'motor_1', 'status': 1, 'voltage': 1, 'current': 1, 'power': 1, 'energy': 1, 'frequency': 1, 'power_factor': 1, 'state': 'normal'}, {'node_id': 'water_flow_1', 'flowrate': 1, 'total_flow': 1, 'pressure': 1, 'pressure_voltage': 1, 'state': 'normal'}, {'node_id': 'water_level_1', 'water_level': 1, 'temperature': 1, 'state': 'normal'}, {'node_id': 'water_quality_1', 'temperature': 0, 'tds_voltage': 1, 'uncompensated_tds': 1, 'compensated_tds': 0, 'state': 'alert'}]
+2025-08-10 23:42:15,763 INFO:MAPE-K System:[MAPE-K] Planning actions...
+2025-08-10 23:42:15,764 INFO:MAPE-K System:[MAPE-K] Plans selected: [{'node_id': 'water_quality_1', 'plan': (1, 'WL001', 'motor_1', 'turn_on_motor', '{"condition": "water_level_low"}', 1, 'alert', 'Motor Start when OHT below minimum', datetime.datetime(2025, 8, 8, 1, 39, 9, 867602))}]
+2025-08-10 23:42:15,764 INFO:MAPE-K System:[MAPE-K] Executing plans...
+2025-08-10 23:42:15,764 INFO:MAPE-K System:[MAPE-K] Execution complete.
+2025-08-10 23:42:24,448 INFO:MAPE-K System:Raw DB row for motor_1 (motor): (datetime.datetime(2025, 8, 10, 23, 42, 21, 244459), 'OFF', 223.92, 1.08, 1784.64, 32.48, 49.71, 0.81)
+2025-08-10 23:42:24,458 INFO:MAPE-K System:Raw DB row for water_flow_1 (water_flow): (datetime.datetime(2025, 8, 10, 23, 42, 21, 214443), 20.03, 2025.56, 9.92, 3.55)
+2025-08-10 23:42:24,466 INFO:MAPE-K System:Raw DB row for water_level_1 (water_level): (datetime.datetime(2025, 8, 10, 23, 42, 21, 230332), 5.28, 27.29)
+2025-08-10 23:42:24,472 INFO:MAPE-K System:Raw DB row for water_quality_1 (water_quality): (datetime.datetime(2025, 8, 10, 23, 42, 21, 199871), 20.87, 2.21, 461.74, 473.58)
+2025-08-10 23:42:24,474 INFO:MAPE-K System:Node motor_1: bad_count=1, quality_score=0.85, state=alert
+2025-08-10 23:42:24,475 INFO:MAPE-K System:Node water_flow_1: bad_count=2, quality_score=0.70, state=alert
+2025-08-10 23:42:24,475 INFO:MAPE-K System:Node water_level_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:42:24,476 INFO:MAPE-K System:Node water_quality_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:42:44,248 INFO:MAPE-K System:[MAPE-K] Monitoring sensors...
+2025-08-10 23:42:44,271 INFO:MAPE-K System:Raw DB row for motor_1 (motor): (datetime.datetime(2025, 8, 10, 23, 42, 40, 195479), 'OFF', 185.41, 15.88, 2573.14, 163.16, 45.9, 0.61)
+2025-08-10 23:42:44,280 INFO:MAPE-K System:Raw DB row for water_flow_1 (water_flow): (datetime.datetime(2025, 8, 10, 23, 42, 40, 226371), 1.39, 932.33, 3.82, 0.58)
+2025-08-10 23:42:44,287 INFO:MAPE-K System:Raw DB row for water_level_1 (water_level): (datetime.datetime(2025, 8, 10, 23, 42, 40, 173101), 4.82, 25.18)
+2025-08-10 23:42:44,291 INFO:MAPE-K System:Raw DB row for water_quality_1 (water_quality): (datetime.datetime(2025, 8, 10, 23, 42, 40, 212621), 29.25, 2.41, 470.33, 417.06)
+2025-08-10 23:42:44,291 INFO:MAPE-K System:[MAPE-K] Sensor data: [{'node_id': 'motor_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 42, 40, 195479), 'status': 'OFF', 'voltage': 185.41, 'current': 15.88, 'power': 2573.14, 'energy': 163.16, 'frequency': 45.9, 'power_factor': 0.61}, {'node_id': 'water_flow_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 42, 40, 226371), 'flowrate': 1.39, 'total_flow': 932.33, 'pressure': 3.82, 'pressure_voltage': 0.58}, {'node_id': 'water_level_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 42, 40, 173101), 'water_level': 4.82, 'temperature': 25.18}, {'node_id': 'water_quality_1', 'timestamp': datetime.datetime(2025, 8, 10, 23, 42, 40, 212621), 'temperature': 29.25, 'tds_voltage': 2.41, 'uncompensated_tds': 470.33, 'compensated_tds': 417.06}]
+2025-08-10 23:42:44,291 INFO:MAPE-K System:[MAPE-K] Analyzing data...
+2025-08-10 23:42:44,293 INFO:MAPE-K System:Node motor_1: bad_count=3, quality_score=0.55, state=emergency
+2025-08-10 23:42:44,294 INFO:MAPE-K System:Node water_flow_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:42:44,295 INFO:MAPE-K System:Node water_level_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:42:44,296 INFO:MAPE-K System:Node water_quality_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-10 23:42:44,296 INFO:MAPE-K System:[MAPE-K] Analysis result: [{'node_id': 'motor_1', 'status': 1, 'voltage': 0, 'current': 0, 'power': 1, 'energy': 1, 'frequency': 1, 'power_factor': 0, 'state': 'emergency'}, {'node_id': 'water_flow_1', 'flowrate': 1, 'total_flow': 1, 'pressure': 1, 'pressure_voltage': 1, 'state': 'normal'}, {'node_id': 'water_level_1', 'water_level': 1, 'temperature': 1, 'state': 'normal'}, {'node_id': 'water_quality_1', 'temperature': 1, 'tds_voltage': 1, 'uncompensated_tds': 1, 'compensated_tds': 1, 'state': 'normal'}]
+2025-08-10 23:42:44,296 INFO:MAPE-K System:[MAPE-K] Planning actions...
+2025-08-10 23:42:44,297 INFO:MAPE-K System:[MAPE-K] Plans selected: [{'node_id': 'motor_1', 'plan': (3, 'WL003', 'motor_1', 'emergency_stop', '{"condition": "safety_threshold_exceeded"}', 1, 'emergency', 'Emergency Motor Stop and Alarm', datetime.datetime(2025, 8, 8, 1, 39, 9, 867602))}]
+2025-08-10 23:42:44,297 INFO:MAPE-K System:[MAPE-K] Executing plans...
+2025-08-10 23:42:44,297 INFO:MAPE-K System:[MAPE-K] Execution complete.
