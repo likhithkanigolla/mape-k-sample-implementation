@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  mapek-app:
+    build: .
+    environment:
+      - DB_HOST=postgres
+      - DB_NAME=mapek_dt
+      - DB_USER=postgres
+      - DB_PASS=postgres
+      - LOOP_INTERVAL=30
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - mapek-network
+
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: mapek_dt
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./create_tables.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - mapek-network
+
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - mapek-network
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - mapek-network
+
+volumes:
+  postgres_data:
+  grafana_data:
+
+networks:
+  mapek-network:
+    driver: bridge
