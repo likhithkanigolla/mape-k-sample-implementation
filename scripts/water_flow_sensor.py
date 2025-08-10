@@ -6,8 +6,8 @@ SENSOR_ID = "water_flow_1"
 API_URL = "http://localhost:3043/iot/water_flow"
 
 while True:
-    # Inject anomaly with 10% probability
-    if random.random() < 0.1:
+    # Inject anomaly with 30% probability
+    if random.random() < 0.3:
         data = {
             "node_id": SENSOR_ID,
             "flowrate": round(random.uniform(15, 25), 2),  # Anomalous flowrate

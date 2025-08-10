@@ -4,7 +4,6 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.schedulers import SchedulerNotRunningError
 import psycopg2
 from psycopg2.extras import RealDictCursor
-from mapek.knowledge import set_thresholds, store_ml_model, get_historical_data, update_knowledge, get_all_node_ids, get_thresholds, get_node_ids, get_ml_model
 from app.ml_model import train_ml_model
 import pickle
 import os

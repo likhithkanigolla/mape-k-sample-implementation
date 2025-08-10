@@ -8,8 +8,8 @@ API_URL = "http://localhost:3043/iot/motor"
 motor_state = False  # False = OFF, True = ON
 
 while True:
-    # Inject anomaly with 10% probability
-    if random.random() < 0.1:
+    # Inject anomaly with 30% probability
+    if random.random() < 0.3:
         data = {
             "node_id": SENSOR_ID,
             "status": "ON" if motor_state else "OFF",

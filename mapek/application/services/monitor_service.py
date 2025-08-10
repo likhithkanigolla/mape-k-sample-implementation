@@ -1,4 +1,3 @@
-from mapek.domain.models import SensorReading, ValidationError
 from mapek.infrastructure.database.repositories import NodeRepository
 from mapek.logger import logger
 from typing import List, Dict
@@ -26,6 +25,7 @@ class Monitor:
                             if row[2] is not None: sensor_data["tds_voltage"] = row[2]
                             if row[3] is not None: sensor_data["uncompensated_tds"] = row[3]
                             if row[4] is not None: sensor_data["compensated_tds"] = row[4]
+                            sensor_data_list.append(sensor_data)
                     except Exception as e:
                         logger.error(f"Monitor DB error for {node_id} in water_quality: {e}")
                         continue
@@ -40,6 +40,7 @@ class Monitor:
                             if row[2] is not None: sensor_data["total_flow"] = row[2]
                             if row[3] is not None: sensor_data["pressure"] = row[3]
                             if row[4] is not None: sensor_data["pressure_voltage"] = row[4]
+                            sensor_data_list.append(sensor_data)
                     except Exception as e:
                         logger.error(f"Monitor DB error for {node_id} in water_flow: {e}")
                         continue
@@ -52,6 +53,7 @@ class Monitor:
                             sensor_data["timestamp"] = row[0]
                             if row[1] is not None: sensor_data["water_level"] = row[1]
                             if row[2] is not None: sensor_data["temperature"] = row[2]
+                            sensor_data_list.append(sensor_data)
                     except Exception as e:
                         logger.error(f"Monitor DB error for {node_id} in water_level: {e}")
                         continue
@@ -69,6 +71,7 @@ class Monitor:
                             if row[5] is not None: sensor_data["energy"] = row[5]
                             if row[6] is not None: sensor_data["frequency"] = row[6]
                             if row[7] is not None: sensor_data["power_factor"] = row[7]
+                            sensor_data_list.append(sensor_data)
                     except Exception as e:
                         logger.error(f"Monitor DB error for {node_id} in motor: {e}")
                         continue
@@ -82,18 +85,10 @@ class Monitor:
                             for i, val in enumerate(row[1:], start=1):
                                 if val is not None:
                                     sensor_data[f"param_{i}"] = val
+                            sensor_data_list.append(sensor_data)
                     except Exception as e:
                         logger.error(f"Monitor DB error for {node_id} in default: {e}")
                         continue
-                try:
-                    SensorReading.parse_obj(sensor_data)  # Validate only
-                    sensor_data_list.append(sensor_data)
-                except ValidationError as e:
-                    logger.error(f"Invalid sensor data from {node_id}: {e}")
-                    continue
-                except Exception as e:
-                    logger.error(f"Monitor error for {node_id}: {e}")
-                    continue
         return sensor_data_list if sensor_data_list else []
 
     # get_raw_data is now obsolete
