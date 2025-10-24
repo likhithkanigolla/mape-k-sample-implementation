@@ -1,0 +1,8 @@
+# Plain MAPE-K System Dependencies
+# Install with: pip install -r requirements.txt
+
+# Database
+psycopg2-binary==2.9.9
+
+# HTTP requests for IoT sensors
+requests==2.31.0

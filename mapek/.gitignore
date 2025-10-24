@@ -1,0 +1,7 @@
+/archive/
+/trash/
+/demos/
+__pycache__/
+*.pyc
+.vscode/
+.env

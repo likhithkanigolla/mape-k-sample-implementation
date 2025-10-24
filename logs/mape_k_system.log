@@ -1010,3 +1010,66 @@ water_level
 2025-08-10 23:42:44,297 INFO:MAPE-K System:[MAPE-K] Plans selected: [{'node_id': 'motor_1', 'plan': (3, 'WL003', 'motor_1', 'emergency_stop', '{"condition": "safety_threshold_exceeded"}', 1, 'emergency', 'Emergency Motor Stop and Alarm', datetime.datetime(2025, 8, 8, 1, 39, 9, 867602))}]
 2025-08-10 23:42:44,297 INFO:MAPE-K System:[MAPE-K] Executing plans...
 2025-08-10 23:42:44,297 INFO:MAPE-K System:[MAPE-K] Execution complete.
+2025-08-13 15:26:05,696 WARNING:MAPE-K System:⚠️ Advanced patterns not available: cannot import name 'SensorData' from 'domain.models' (/Users/likhithkanigolla/IIITH/code-files/Digital-Twin/mape-k/mapek/domain/models.py)
+2025-08-13 15:26:05,696 WARNING:MAPE-K System:⚠️ Advanced patterns not available: cannot import name 'SensorData' from 'domain.models' (/Users/likhithkanigolla/IIITH/code-files/Digital-Twin/mape-k/mapek/domain/models.py)
+2025-08-13 15:26:05,696 INFO:MAPE-K System:🚀 Basic MAPE-K system initialized
+2025-08-13 15:26:05,696 INFO:MAPE-K System:🚀 Basic MAPE-K system initialized
+2025-08-13 15:26:05,697 INFO:MAPE-K System:[Enhanced MAPE-K] Starting enhanced background loop...
+2025-08-13 15:26:05,697 INFO:MAPE-K System:[Enhanced MAPE-K] Starting enhanced background loop...
+2025-08-13 15:26:05,697 INFO:MAPE-K System:🔄 Starting enhanced MAPE-K cycle #1
+2025-08-13 15:26:05,697 INFO:MAPE-K System:🔄 Starting enhanced MAPE-K cycle #1
+2025-08-13 15:26:05,697 INFO:MAPE-K System:📊 MONITOR: Enhanced data collection
+2025-08-13 15:26:05,697 INFO:MAPE-K System:📊 MONITOR: Enhanced data collection
+2025-08-13 15:26:05,722 INFO:MAPE-K System:Raw DB row for motor_1 (motor): (datetime.datetime(2025, 8, 13, 15, 25, 47, 685064), 'OFF', 208.61, 16.43, 2956.93, 158.96, 46.94, 0.62)
+2025-08-13 15:26:05,722 INFO:MAPE-K System:Raw DB row for motor_1 (motor): (datetime.datetime(2025, 8, 13, 15, 25, 47, 685064), 'OFF', 208.61, 16.43, 2956.93, 158.96, 46.94, 0.62)
+2025-08-13 15:26:05,731 INFO:MAPE-K System:Raw DB row for water_flow_1 (water_flow): (datetime.datetime(2025, 8, 13, 15, 25, 47, 707802), 20.0, 2355.18, 9.12, 4.46)
+2025-08-13 15:26:05,731 INFO:MAPE-K System:Raw DB row for water_flow_1 (water_flow): (datetime.datetime(2025, 8, 13, 15, 25, 47, 707802), 20.0, 2355.18, 9.12, 4.46)
+2025-08-13 15:26:05,741 INFO:MAPE-K System:Raw DB row for water_level_1 (water_level): (datetime.datetime(2025, 8, 13, 15, 25, 47, 725899), 8.95, 29.67)
+2025-08-13 15:26:05,741 INFO:MAPE-K System:Raw DB row for water_level_1 (water_level): (datetime.datetime(2025, 8, 13, 15, 25, 47, 725899), 8.95, 29.67)
+2025-08-13 15:26:05,751 INFO:MAPE-K System:Raw DB row for water_quality_1 (water_quality): (datetime.datetime(2025, 8, 13, 15, 25, 47, 743494), 22.28, 2.15, 468.69, 110.23)
+2025-08-13 15:26:05,751 INFO:MAPE-K System:Raw DB row for water_quality_1 (water_quality): (datetime.datetime(2025, 8, 13, 15, 25, 47, 743494), 22.28, 2.15, 468.69, 110.23)
+2025-08-13 15:26:05,752 INFO:MAPE-K System:📡 Total sensors monitored: 6
+2025-08-13 15:26:05,752 INFO:MAPE-K System:📡 Total sensors monitored: 6
+2025-08-13 15:26:05,752 INFO:MAPE-K System:🔍 ANALYZE: Scenario-driven analysis
+2025-08-13 15:26:05,752 INFO:MAPE-K System:🔍 ANALYZE: Scenario-driven analysis
+2025-08-13 15:26:05,755 INFO:MAPE-K System:Node motor_1: bad_count=3, quality_score=0.55, state=emergency
+2025-08-13 15:26:05,755 INFO:MAPE-K System:Node motor_1: bad_count=3, quality_score=0.55, state=emergency
+2025-08-13 15:26:05,756 INFO:MAPE-K System:Node water_flow_1: bad_count=2, quality_score=0.70, state=alert
+2025-08-13 15:26:05,756 INFO:MAPE-K System:Node water_flow_1: bad_count=2, quality_score=0.70, state=alert
+2025-08-13 15:26:05,756 INFO:MAPE-K System:Node water_level_1: bad_count=1, quality_score=0.85, state=alert
+2025-08-13 15:26:05,756 INFO:MAPE-K System:Node water_level_1: bad_count=1, quality_score=0.85, state=alert
+2025-08-13 15:26:05,757 INFO:MAPE-K System:Node water_quality_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-13 15:26:05,757 INFO:MAPE-K System:Node water_quality_1: bad_count=0, quality_score=1.00, state=normal
+2025-08-13 15:26:05,757 INFO:MAPE-K System:🔍 Using original analysis (patterns not available)
+2025-08-13 15:26:05,757 INFO:MAPE-K System:🔍 Using original analysis (patterns not available)
+2025-08-13 15:26:05,757 INFO:MAPE-K System:📊 Analysis result: [{'node_id': 'motor_1', 'status': 1, 'voltage': 0, 'current': 0, 'power': 1, 'energy': 1, 'frequency': 1, 'power_factor': 0, 'state': 'emergency'}, {'node_id': 'water_flow_1', 'flowrate': 0, 'total_flow': 1, 'pressure': 0, 'pressure_voltage': 1, 'state': 'alert'}, {'node_id': 'water_level_1', 'water_level': 0, 'temperature': 1, 'state': 'alert'}, {'node_id': 'water_quality_1', 'temperature': 1, 'tds_voltage': 1, 'uncompensated_tds': 1, 'compensated_tds': 1, 'state': 'normal'}]
+2025-08-13 15:26:05,757 INFO:MAPE-K System:📊 Analysis result: [{'node_id': 'motor_1', 'status': 1, 'voltage': 0, 'current': 0, 'power': 1, 'energy': 1, 'frequency': 1, 'power_factor': 0, 'state': 'emergency'}, {'node_id': 'water_flow_1', 'flowrate': 0, 'total_flow': 1, 'pressure': 0, 'pressure_voltage': 1, 'state': 'alert'}, {'node_id': 'water_level_1', 'water_level': 0, 'temperature': 1, 'state': 'alert'}, {'node_id': 'water_quality_1', 'temperature': 1, 'tds_voltage': 1, 'uncompensated_tds': 1, 'compensated_tds': 1, 'state': 'normal'}]
+2025-08-13 15:26:05,757 INFO:MAPE-K System:📋 PLAN: Template-based planning
+2025-08-13 15:26:05,757 INFO:MAPE-K System:📋 PLAN: Template-based planning
+2025-08-13 15:26:05,759 INFO:MAPE-K System:📝 Enhanced plan generated: {'base_plan': [{'node_id': 'motor_1', 'plan': (3, 'WL003', 'motor_1', 'emergency_stop', '{"condition": "safety_threshold_exceeded"}', 1, 'emergency', 'Emergency Motor Stop and Alarm', datetime.datetime(2025, 8, 8, 1, 39, 9, 867602))}, {'node_id': 'water_flow_1', 'plan': (1, 'WL001', 'motor_1', 'turn_on_motor', '{"condition": "water_level_low"}', 1, 'alert', 'Motor Start when OHT below minimum', datetime.datetime(2025, 8, 8, 1, 39, 9, 867602))}, {'node_id': 'water_level_1', 'plan': (1, 'WL001', 'motor_1', 'turn_on_motor', '{"condition": "water_level_low"}', 1, 'alert', 'Motor Start when OHT below minimum', datetime.datetime(2025, 8, 8, 1, 39, 9, 867602))}], 'actions': [], 'strategy': 'template_method', 'timestamp': '2025-08-13T15:26:05.759465'}
+2025-08-13 15:26:05,759 INFO:MAPE-K System:📝 Enhanced plan generated: {'base_plan': [{'node_id': 'motor_1', 'plan': (3, 'WL003', 'motor_1', 'emergency_stop', '{"condition": "safety_threshold_exceeded"}', 1, 'emergency', 'Emergency Motor Stop and Alarm', datetime.datetime(2025, 8, 8, 1, 39, 9, 867602))}, {'node_id': 'water_flow_1', 'plan': (1, 'WL001', 'motor_1', 'turn_on_motor', '{"condition": "water_level_low"}', 1, 'alert', 'Motor Start when OHT below minimum', datetime.datetime(2025, 8, 8, 1, 39, 9, 867602))}, {'node_id': 'water_level_1', 'plan': (1, 'WL001', 'motor_1', 'turn_on_motor', '{"condition": "water_level_low"}', 1, 'alert', 'Motor Start when OHT below minimum', datetime.datetime(2025, 8, 8, 1, 39, 9, 867602))}], 'actions': [], 'strategy': 'template_method', 'timestamp': '2025-08-13T15:26:05.759465'}
+2025-08-13 15:26:05,759 INFO:MAPE-K System:⚡ EXECUTE: Reversible command execution
+2025-08-13 15:26:05,759 INFO:MAPE-K System:⚡ EXECUTE: Reversible command execution
+2025-08-13 15:26:05,759 ERROR:MAPE-K System:❌ Enhanced MAPE-K cycle failed: string indices must be integers, not 'str'
+2025-08-13 15:26:05,759 ERROR:MAPE-K System:❌ Enhanced MAPE-K cycle failed: string indices must be integers, not 'str'
+2025-08-13 15:26:05,760 ERROR:MAPE-K System:[Enhanced MAPE-K] Error in background loop: string indices must be integers, not 'str'
+2025-08-13 15:26:05,760 ERROR:MAPE-K System:[Enhanced MAPE-K] Error in background loop: string indices must be integers, not 'str'
+2025-09-29 15:18:33,386 INFO:MAPE-K System:[MAPE-K] Monitoring sensors...
+2025-09-29 15:18:33,435 INFO:MAPE-K System:Raw DB row for motor_1 (motor): (datetime.datetime(2025, 8, 26, 13, 43, 20, 961785), 'OFF', 186.27, 17.52, 2697.99, 174.37, 47.87, 0.55)
+2025-09-29 15:18:33,449 INFO:MAPE-K System:Raw DB row for water_flow_1 (water_flow): (datetime.datetime(2025, 8, 26, 13, 43, 20, 942536), 2.45, 932.6, 2.83, 1.91)
+2025-09-29 15:18:33,459 INFO:MAPE-K System:Raw DB row for water_level_1 (water_level): (datetime.datetime(2025, 8, 26, 13, 43, 20, 979795), -1.44, 57.81)
+2025-09-29 15:18:33,471 INFO:MAPE-K System:Raw DB row for water_quality_1 (water_quality): (datetime.datetime(2025, 8, 26, 13, 43, 20, 919002), 22.8, 1.59, 278.51, 152.55)
+2025-09-29 15:18:33,472 INFO:MAPE-K System:[MAPE-K] Sensor data: [{'node_id': 'motor_1', 'timestamp': datetime.datetime(2025, 8, 26, 13, 43, 20, 961785), 'status': 'OFF', 'voltage': 186.27, 'current': 17.52, 'power': 2697.99, 'energy': 174.37, 'frequency': 47.87, 'power_factor': 0.55}, {'node_id': 'water_flow_1', 'timestamp': datetime.datetime(2025, 8, 26, 13, 43, 20, 942536), 'flowrate': 2.45, 'total_flow': 932.6, 'pressure': 2.83, 'pressure_voltage': 1.91}, {'node_id': 'water_level_1', 'timestamp': datetime.datetime(2025, 8, 26, 13, 43, 20, 979795), 'water_level': -1.44, 'temperature': 57.81}, {'node_id': 'water_quality_1', 'timestamp': datetime.datetime(2025, 8, 26, 13, 43, 20, 919002), 'temperature': 22.8, 'tds_voltage': 1.59, 'uncompensated_tds': 278.51, 'compensated_tds': 152.55}]
+2025-09-29 15:18:33,472 INFO:MAPE-K System:[MAPE-K] Analyzing data...
+2025-09-29 15:18:33,474 INFO:MAPE-K System:Node motor_1: bad_count=3, quality_score=0.35, state=emergency
+2025-09-29 15:18:33,475 INFO:MAPE-K System:Node water_flow_1: bad_count=0, quality_score=0.80, state=alert
+2025-09-29 15:18:33,476 ERROR:MAPE-K System:Analyzer error for node water_level_1: 1 validation error for SensorReading
+water_level
+  Value error, Water level must be between 0-500 cm [type=value_error, input_value=-1.44, input_type=float]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-09-29 15:18:33,477 INFO:MAPE-K System:Node water_quality_1: bad_count=0, quality_score=0.80, state=alert
+2025-09-29 15:18:33,477 INFO:MAPE-K System:[MAPE-K] Analysis result: [{'node_id': 'motor_1', 'status': 1, 'voltage': 0, 'current': 0, 'power': 1, 'energy': 1, 'frequency': 1, 'power_factor': 0, 'state': 'emergency'}, {'node_id': 'water_flow_1', 'flowrate': 1, 'total_flow': 1, 'pressure': 1, 'pressure_voltage': 1, 'state': 'alert'}, {'node_id': 'water_quality_1', 'temperature': 1, 'tds_voltage': 1, 'uncompensated_tds': 1, 'compensated_tds': 1, 'state': 'alert'}]
+2025-09-29 15:18:33,477 INFO:MAPE-K System:[MAPE-K] Planning actions...
+2025-09-29 15:18:33,479 INFO:MAPE-K System:[MAPE-K] Plans selected: [{'node_id': 'motor_1', 'plan': (3, 'WL003', 'motor_1', 'emergency_stop', '{"condition": "safety_threshold_exceeded"}', 1, 'emergency', 'Emergency Motor Stop and Alarm', datetime.datetime(2025, 8, 8, 1, 39, 9, 867602))}, {'node_id': 'water_flow_1', 'plan': (1, 'WL001', 'motor_1', 'turn_on_motor', '{"condition": "water_level_low"}', 1, 'alert', 'Motor Start when OHT below minimum', datetime.datetime(2025, 8, 8, 1, 39, 9, 867602))}, {'node_id': 'water_quality_1', 'plan': (1, 'WL001', 'motor_1', 'turn_on_motor', '{"condition": "water_level_low"}', 1, 'alert', 'Motor Start when OHT below minimum', datetime.datetime(2025, 8, 8, 1, 39, 9, 867602))}]
+2025-09-29 15:18:33,479 INFO:MAPE-K System:[MAPE-K] Executing plans...
+2025-09-29 15:18:33,479 INFO:MAPE-K System:[MAPE-K] Execution complete.
