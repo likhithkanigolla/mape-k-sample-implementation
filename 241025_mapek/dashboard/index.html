@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MAPE-K Device Control Room</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-0: #fff5e6;
+      --bg-1: #f3dec8;
+      --ink-0: #1f1d1a;
+      --ink-1: #5f5952;
+      --line: rgba(31, 29, 26, 0.14);
+      --card: rgba(255, 255, 255, 0.75);
+      --card-strong: rgba(255, 255, 255, 0.92);
+      --ok: #236b2d;
+      --warn: #a86506;
+      --bad: #9f1f1f;
+      --accent: #005f6b;
+      --accent-2: #b5483d;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Syne", "Avenir Next", "Segoe UI", sans-serif;
+      color: var(--ink-0);
+      background:
+        radial-gradient(1200px 600px at -10% -20%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 70%),
+        radial-gradient(900px 400px at 100% 0%, rgba(196, 238, 241, 0.5) 0%, rgba(196, 238, 241, 0) 75%),
+        linear-gradient(135deg, var(--bg-0), var(--bg-1));
+    }
+
+    .shell {
+      width: min(1300px, 100% - 20px);
+      margin: 16px auto 32px;
+      display: grid;
+      gap: 14px;
+      animation: rise 600ms ease-out;
+    }
+
+    .hero,
+    .panel,
+    .device-card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--card);
+      box-shadow: 0 12px 32px rgba(18, 23, 28, 0.08);
+      backdrop-filter: blur(4px);
+    }
+
+    .hero {
+      padding: 16px;
+      background: linear-gradient(120deg, var(--card-strong), rgba(255, 255, 255, 0.55));
+    }
+
+    .label {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-1);
+    }
+
+    h1 {
+      margin: 6px 0 0;
+      font-size: clamp(24px, 5vw, 40px);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+
+    .sub {
+      margin: 10px 0 0;
+      color: var(--ink-1);
+      font-size: 14px;
+      max-width: 920px;
+    }
+
+    .meta-row,
+    .kpi-grid,
+    .control-grid,
+    .device-grid,
+    .mapek-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .meta-row {
+      margin-top: 12px;
+      grid-template-columns: repeat(3, minmax(160px, 1fr));
+    }
+
+    .chip {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: var(--card-strong);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      color: var(--ink-1);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .kpi-grid {
+      margin-top: 12px;
+      grid-template-columns: repeat(4, minmax(130px, 1fr));
+    }
+
+    .kpi {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.65);
+    }
+
+    .kpi .title {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-1);
+    }
+
+    .kpi .value {
+      margin-top: 6px;
+      font-size: 30px;
+      font-family: "IBM Plex Mono", monospace;
+      font-weight: 600;
+      line-height: 1;
+    }
+
+    .panel {
+      overflow: hidden;
+    }
+
+    .panel-head {
+      border-bottom: 1px solid var(--line);
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.45));
+    }
+
+    .panel-head h2 {
+      margin: 0;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .timeline-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 220px;
+    }
+
+    .timeline-controls .label {
+      white-space: nowrap;
+      font-size: 10px;
+    }
+
+    .timeline-controls select {
+      height: 34px;
+      font-size: 12px;
+      padding: 6px 8px;
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    .timeline-note {
+      margin-top: 6px;
+      font-size: 11px;
+      font-family: "IBM Plex Mono", monospace;
+      color: #8a5a00;
+      background: #fff3cf;
+      border: 1px solid #f0d083;
+      border-radius: 8px;
+      padding: 4px 8px;
+      display: inline-block;
+    }
+
+    .control-grid {
+      padding: 12px;
+      grid-template-columns: minmax(260px, 2.2fr) minmax(200px, 1.6fr) minmax(130px, 1fr) minmax(130px, 1fr) minmax(160px, 1.1fr);
+      align-items: end;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .field label {
+      font-size: 12px;
+      color: var(--ink-1);
+      font-family: "IBM Plex Mono", monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    input,
+    select,
+    button {
+      height: 40px;
+      width: 100%;
+      min-width: 0;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      padding: 8px 10px;
+      font-family: "IBM Plex Mono", monospace;
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--ink-0);
+    }
+
+    select {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    button {
+      border: 1px solid transparent;
+      cursor: pointer;
+      font-weight: 600;
+      background: linear-gradient(120deg, var(--accent), #15818f);
+      color: #fff;
+      transition: transform 140ms ease, filter 140ms ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.03);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .inject-msg {
+      margin: 0 12px 12px;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      background: rgba(255, 255, 255, 0.6);
+      color: var(--ink-1);
+      display: none;
+    }
+
+    .inject-msg.ok {
+      color: var(--ok);
+      border-color: rgba(35, 107, 45, 0.35);
+      background: rgba(35, 107, 45, 0.1);
+    }
+
+    .inject-msg.bad {
+      color: var(--bad);
+      border-color: rgba(159, 31, 31, 0.35);
+      background: rgba(159, 31, 31, 0.1);
+    }
+
+    .admin-actions {
+      margin: 0 12px 12px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .danger-btn {
+      width: auto;
+      min-width: 170px;
+      border: 1px solid transparent;
+      background: linear-gradient(120deg, #8f251d, #b7342a);
+      color: #fff;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      padding: 0 12px;
+    }
+
+    .admin-msg {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      color: var(--ink-1);
+      padding: 6px 8px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.65);
+      max-width: 820px;
+    }
+
+    .admin-msg.ok {
+      color: var(--ok);
+      border-color: rgba(35, 107, 45, 0.35);
+      background: rgba(35, 107, 45, 0.1);
+    }
+
+    .admin-msg.bad {
+      color: var(--bad);
+      border-color: rgba(159, 31, 31, 0.35);
+      background: rgba(159, 31, 31, 0.1);
+    }
+
+    .device-grid {
+      padding: 12px;
+      grid-template-columns: repeat(2, minmax(220px, 1fr));
+    }
+
+    .device-card {
+      padding: 12px;
+      background: linear-gradient(130deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.62));
+    }
+
+    .device-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: baseline;
+    }
+
+    .device-id {
+      font-size: 20px;
+      letter-spacing: -0.02em;
+    }
+
+    .device-type {
+      font-size: 12px;
+      color: var(--ink-1);
+      font-family: "IBM Plex Mono", monospace;
+    }
+
+    .status-pill {
+      border-radius: 999px;
+      padding: 4px 9px;
+      font-size: 11px;
+      font-family: "IBM Plex Mono", monospace;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .ok {
+      color: var(--ok);
+      border-color: rgba(35, 107, 45, 0.35);
+      background: rgba(35, 107, 45, 0.12);
+    }
+
+    .warn {
+      color: var(--warn);
+      border-color: rgba(168, 101, 6, 0.35);
+      background: rgba(168, 101, 6, 0.12);
+    }
+
+    .bad {
+      color: var(--bad);
+      border-color: rgba(159, 31, 31, 0.35);
+      background: rgba(159, 31, 31, 0.12);
+    }
+
+    .device-stats {
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      color: var(--ink-1);
+    }
+
+    .metric {
+      padding: 7px 8px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.65);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .mapek-grid {
+      padding: 12px;
+      grid-template-columns: repeat(2, minmax(220px, 1fr));
+    }
+
+    .column {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.6);
+      overflow: hidden;
+    }
+
+    .column h3 {
+      margin: 0;
+      padding: 10px;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    ul.event-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      max-height: 290px;
+      overflow: auto;
+    }
+
+    .event-list li {
+      border-bottom: 1px solid var(--line);
+      padding: 9px 10px;
+      font-size: 12px;
+    }
+
+    .event-list li:last-child {
+      border-bottom: none;
+    }
+
+    .event-time {
+      font-family: "IBM Plex Mono", monospace;
+      color: var(--ink-1);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .empty {
+      padding: 12px;
+      color: var(--ink-1);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 1080px) {
+      .control-grid {
+        grid-template-columns: repeat(2, minmax(150px, 1fr));
+      }
+
+      .meta-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .control-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .timeline-controls {
+        width: 100%;
+        min-width: 0;
+      }
+    }
+
+    @media (max-width: 880px) {
+      .device-grid,
+      .mapek-grid,
+      .kpi-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section class="hero">
+      <div class="label">Digital Twin Operations</div>
+      <h1>MAPE-K Device Control Room</h1>
+      <p class="sub">
+        Inject scenario S1-S11 into any device, then watch the issue appear on the device card and flow through Monitor, Analyze, Plan, and Execute events.
+      </p>
+      <div class="meta-row">
+        <span id="lastUpdate" class="chip">Last update: --</span>
+        <span class="chip">Refresh: 5 seconds</span>
+        <span id="gatewayInfo" class="chip">Gateway: --</span>
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="title">Monitor Rows</div>
+          <div id="monitorCount" class="value">0</div>
+        </div>
+        <div class="kpi">
+          <div class="title">Analyze Events</div>
+          <div id="analyzeCount" class="value">0</div>
+        </div>
+        <div class="kpi">
+          <div class="title">Plan Selections</div>
+          <div id="planCount" class="value">0</div>
+        </div>
+        <div class="kpi">
+          <div class="title">Execute Events</div>
+          <div id="executeCount" class="value">0</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Scenario Injection</h2>
+        <span class="label">Gateway `/scenario/inject`</span>
+      </div>
+      <div class="control-grid">
+        <div class="field">
+          <label for="scenarioCode">Scenario</label>
+          <select id="scenarioCode"></select>
+        </div>
+        <div class="field">
+          <label for="targetNode">Target Device</label>
+          <select id="targetNode"></select>
+        </div>
+        <div class="field">
+          <label for="durationCycles">Duration (cycles)</label>
+          <input id="durationCycles" type="number" min="1" max="50" value="6" />
+        </div>
+        <div class="field">
+          <label for="intensity">Intensity</label>
+          <input id="intensity" type="number" min="0.2" max="3" step="0.1" value="1.0" />
+        </div>
+        <div class="field">
+          <label for="injectBtn">Action</label>
+          <button id="injectBtn" type="button">Inject Scenario</button>
+        </div>
+      </div>
+      <div id="injectMessage" class="inject-msg"></div>
+      <div class="admin-actions">
+        <button id="resetDatabaseBtn" class="danger-btn" type="button">Reset Full Database</button>
+        <span id="adminMessage" class="admin-msg">Danger zone: clears all tables and re-seeds defaults.</span>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Physical Device View</h2>
+        <span class="label">Live status from `/device/{node}/status` + latest sensor values</span>
+      </div>
+      <div id="deviceGrid" class="device-grid"></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>MAPE-K Loop Timeline</h2>
+        <div class="timeline-controls">
+          <span class="label">Node Filter</span>
+          <select id="timelineNodeFilter"></select>
+        </div>
+      </div>
+      <div class="mapek-grid">
+        <div class="column">
+          <h3>Monitor</h3>
+          <div id="monitorPendingNote" class="timeline-note" style="display: none;"></div>
+          <ul id="monitorList" class="event-list"></ul>
+        </div>
+        <div class="column">
+          <h3>Analyze</h3>
+          <ul id="analyzeList" class="event-list"></ul>
+        </div>
+        <div class="column">
+          <h3>Plan</h3>
+          <ul id="planList" class="event-list"></ul>
+        </div>
+        <div class="column">
+          <h3>Execute</h3>
+          <ul id="executeList" class="event-list"></ul>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const monitorCount = document.getElementById("monitorCount");
+    const analyzeCount = document.getElementById("analyzeCount");
+    const planCount = document.getElementById("planCount");
+    const executeCount = document.getElementById("executeCount");
+    const lastUpdate = document.getElementById("lastUpdate");
+    const gatewayInfo = document.getElementById("gatewayInfo");
+
+    const scenarioCodeEl = document.getElementById("scenarioCode");
+    const targetNodeEl = document.getElementById("targetNode");
+    const durationCyclesEl = document.getElementById("durationCycles");
+    const intensityEl = document.getElementById("intensity");
+    const injectBtn = document.getElementById("injectBtn");
+    const injectMessage = document.getElementById("injectMessage");
+    const resetDatabaseBtn = document.getElementById("resetDatabaseBtn");
+    const adminMessage = document.getElementById("adminMessage");
+
+    const deviceGrid = document.getElementById("deviceGrid");
+
+    const monitorList = document.getElementById("monitorList");
+    const monitorPendingNote = document.getElementById("monitorPendingNote");
+    const analyzeList = document.getElementById("analyzeList");
+    const planList = document.getElementById("planList");
+    const executeList = document.getElementById("executeList");
+    const timelineNodeFilterEl = document.getElementById("timelineNodeFilter");
+
+    const state = {
+      apiBase: null,
+      catalog: [],
+      devices: [],
+      dashboard: null,
+      statusByNode: {},
+      scenarioDefaults: {},
+      timelineNodeFilter: "ALL",
+    };
+
+    function safeText(v) {
+      if (v === null || v === undefined || v === "") return "--";
+      return String(v).replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    function ts(v) {
+      if (!v) return "--";
+      const d = new Date(v);
+      return Number.isNaN(d.getTime()) ? String(v) : d.toLocaleString();
+    }
+
+    function timeAgo(v) {
+      if (!v) return "--";
+      const d = new Date(v);
+      if (Number.isNaN(d.getTime())) return "--";
+      const diff = Math.max(0, Date.now() - d.getTime());
+      const sec = Math.floor(diff / 1000);
+      if (sec < 60) return `${sec}s ago`;
+      const min = Math.floor(sec / 60);
+      if (min < 60) return `${min}m ago`;
+      const hrs = Math.floor(min / 60);
+      return `${hrs}h ago`;
+    }
+
+    function nodeType(nodeId) {
+      if (!nodeId) return "unknown";
+      if (nodeId.includes("water_quality")) return "water_quality";
+      if (nodeId.includes("water_level")) return "water_level";
+      if (nodeId.includes("water_flow")) return "water_flow";
+      if (nodeId.includes("motor")) return "motor";
+      return "unknown";
+    }
+
+    function statusClass(statusText) {
+      const s = String(statusText || "").toLowerCase();
+      if (s.includes("healthy") || s.includes("normal") || s.includes("success") || s === "ok") return "ok";
+      if (s.includes("inject") || s.includes("fault") || s.includes("fail") || s.includes("error") || s.includes("anomal")) return "bad";
+      if (s.includes("warn") || s.includes("pending")) return "warn";
+      return "warn";
+    }
+
+    function showInjectMessage(kind, message) {
+      injectMessage.className = `inject-msg ${kind}`;
+      injectMessage.textContent = message;
+      injectMessage.style.display = "block";
+    }
+
+    function showAdminMessage(kind, message) {
+      adminMessage.className = `admin-msg ${kind}`;
+      adminMessage.textContent = message;
+    }
+
+    function latestByNode(rows) {
+      const map = {};
+      for (const row of rows || []) {
+        const id = row.node_id;
+        if (!id) continue;
+        if (!map[id]) {
+          map[id] = row;
+          continue;
+        }
+        const a = new Date(row.timestamp || 0).getTime();
+        const b = new Date(map[id].timestamp || 0).getTime();
+        if (a > b) map[id] = row;
+      }
+      return map;
+    }
+
+    function monitorSummary(row) {
+      if (!row) return "No monitor data";
+      const type = row.sensor_type || nodeType(row.node_id);
+      if (type === "water_quality") {
+        return `temp=${safeText(row.temperature)} | tds=${safeText(row.compensated_tds)}`;
+      }
+      if (type === "water_level") {
+        return `level=${safeText(row.water_level)} | temp=${safeText(row.temperature)}`;
+      }
+      if (type === "water_flow") {
+        return `flow=${safeText(row.flowrate)} | pressure=${safeText(row.pressure)}`;
+      }
+      if (type === "motor") {
+        return `status=${safeText(row.status)} | power=${safeText(row.power)} | current=${safeText(row.current)}`;
+      }
+      return "Unknown sensor type";
+    }
+
+    function toMillis(value) {
+      const t = new Date(value || 0).getTime();
+      return Number.isNaN(t) ? 0 : t;
+    }
+
+    function latestDecisionTimestampForNode(nodeId, data) {
+      if (!nodeId || nodeId === "ALL" || !data) return null;
+
+      const candidates = [];
+      for (const row of data.analyze || []) {
+        if (row?.node_id === nodeId) candidates.push(row.timestamp);
+      }
+      for (const row of data.plan || []) {
+        if (row?.node_id === nodeId) candidates.push(row.timestamp);
+      }
+      for (const row of data.execute || []) {
+        if (row?.node_id === nodeId) candidates.push(row.timestamp);
+      }
+      for (const row of data.gateway_execute || []) {
+        if (row?.node_id === nodeId) candidates.push(row.timestamp);
+      }
+
+      if (!candidates.length) return null;
+      const latest = candidates
+        .map(toMillis)
+        .reduce((maxTs, tsValue) => Math.max(maxTs, tsValue), 0);
+
+      return latest > 0 ? latest : null;
+    }
+
+    function updatePendingMonitorNotice(selectedNode, decisionAnchorTs, filteredMonitor) {
+      if (selectedNode === "ALL" || !decisionAnchorTs) {
+        monitorPendingNote.style.display = "none";
+        monitorPendingNote.textContent = "";
+        return;
+      }
+
+      const pendingRows = (filteredMonitor || []).filter(
+        (row) => toMillis(row?.timestamp) > decisionAnchorTs
+      );
+
+      if (!pendingRows.length) {
+        monitorPendingNote.style.display = "none";
+        monitorPendingNote.textContent = "";
+        return;
+      }
+
+      const newestPendingTs = pendingRows
+        .map((row) => toMillis(row?.timestamp))
+        .reduce((maxTs, tsValue) => Math.max(maxTs, tsValue), 0);
+
+      monitorPendingNote.textContent = `${pendingRows.length} newer monitor sample(s) pending analysis (latest ${ts(newestPendingTs)})`;
+      monitorPendingNote.style.display = "inline-block";
+    }
+
+    function renderEventList(el, rows, formatter, emptyMessage = "No events yet.") {
+      if (!rows || rows.length === 0) {
+        el.innerHTML = `<li class="empty">${safeText(emptyMessage)}</li>`;
+        return;
+      }
+      el.innerHTML = rows.map(formatter).join("");
+    }
+
+    function applyTimelineNodeFilter(rows) {
+      const selectedNode = state.timelineNodeFilter;
+      if (!rows || selectedNode === "ALL") return rows || [];
+      return (rows || []).filter((row) => row.node_id === selectedNode);
+    }
+
+    function refreshTimelineFilterOptions() {
+      const knownNodes = new Set(state.devices || []);
+
+      for (const row of state.dashboard?.monitor || []) {
+        if (row?.node_id) knownNodes.add(row.node_id);
+      }
+      for (const row of state.dashboard?.analyze || []) {
+        if (row?.node_id) knownNodes.add(row.node_id);
+      }
+      for (const row of state.dashboard?.plan || []) {
+        if (row?.node_id) knownNodes.add(row.node_id);
+      }
+      for (const row of state.dashboard?.execute || []) {
+        if (row?.node_id) knownNodes.add(row.node_id);
+      }
+      for (const row of state.dashboard?.gateway_execute || []) {
+        if (row?.node_id) knownNodes.add(row.node_id);
+      }
+
+      const nodeList = Array.from(knownNodes).sort();
+      timelineNodeFilterEl.innerHTML = [`<option value="ALL">All nodes</option>`]
+        .concat(nodeList.map((node) => `<option value="${safeText(node)}">${safeText(node)}</option>`))
+        .join("");
+
+      if (state.timelineNodeFilter !== "ALL" && !nodeList.includes(state.timelineNodeFilter)) {
+        state.timelineNodeFilter = "ALL";
+      }
+      timelineNodeFilterEl.value = state.timelineNodeFilter;
+    }
+
+    function renderDeviceCards() {
+      const dashboard = state.dashboard;
+      const latestMonitor = latestByNode(dashboard?.monitor || []);
+      const nodes = state.devices.length ? state.devices : Object.keys(latestMonitor);
+
+      if (!nodes.length) {
+        deviceGrid.innerHTML = `<div class="empty">No devices discovered yet.</div>`;
+        return;
+      }
+
+      const cards = nodes.map((nodeId) => {
+        const status = state.statusByNode[nodeId] || {};
+        const monitorRow = latestMonitor[nodeId];
+        const faulty = status.is_faulty === true;
+        const injected = status.injected_scenario;
+
+        let statusText = "Unknown";
+        if (faulty) statusText = "Fault Active";
+        if (!faulty && status.fault_fixed) statusText = "Recovered";
+        if (!faulty && !status.fault_fixed) statusText = "Healthy";
+        if (injected) statusText = `Injected ${injected}`;
+
+        const cls = statusClass(statusText);
+
+        return `
+          <article class="device-card">
+            <div class="device-top">
+              <div>
+                <div class="device-id">${safeText(nodeId)}</div>
+                <div class="device-type">${safeText(nodeType(nodeId))}</div>
+              </div>
+              <span class="status-pill ${cls}">${safeText(statusText)}</span>
+            </div>
+            <div class="device-stats">
+              <div class="metric">Cycle: ${safeText(status.cycle)}</div>
+              <div class="metric">Last cmd: ${safeText(status.last_command)}</div>
+              <div class="metric">Scenario: ${safeText(injected || "none")}</div>
+              <div class="metric">Cycles left: ${safeText(status.injected_cycles_left)}</div>
+              <div class="metric" style="grid-column: span 2">${monitorSummary(monitorRow)}</div>
+              <div class="metric" style="grid-column: span 2">Last monitor: ${timeAgo(monitorRow?.timestamp)}</div>
+            </div>
+          </article>
+        `;
+      });
+
+      deviceGrid.innerHTML = cards.join("");
+    }
+
+    function renderMapekLists() {
+      const data = state.dashboard || {};
+      const selectedNode = state.timelineNodeFilter;
+      const emptyMsg = selectedNode === "ALL"
+        ? "No events yet."
+        : `No events for ${selectedNode} in this stage.`;
+
+      const filteredMonitor = applyTimelineNodeFilter(data.monitor || []);
+      const filteredAnalyze = applyTimelineNodeFilter(data.analyze || []);
+      const filteredPlan = applyTimelineNodeFilter(data.plan || []);
+
+      const decisionAnchorTs = latestDecisionTimestampForNode(selectedNode, data);
+      let monitorRowsForDisplay = filteredMonitor;
+
+      updatePendingMonitorNotice(selectedNode, decisionAnchorTs, filteredMonitor);
+
+      // For single-node view, align monitor rows with the latest decision cycle
+      // so users don't see a newer raw sensor sample paired with older decisions.
+      if (selectedNode !== "ALL" && decisionAnchorTs) {
+        const priorOrEqualMonitor = filteredMonitor.filter(
+          (row) => toMillis(row?.timestamp) <= decisionAnchorTs
+        );
+        if (priorOrEqualMonitor.length > 0) {
+          monitorRowsForDisplay = priorOrEqualMonitor;
+        }
+      }
+
+      renderEventList(monitorList, monitorRowsForDisplay, (row) => `
+        <li>
+          <span class="event-time">${ts(row.timestamp)}</span>
+          <strong>${safeText(row.node_id)}</strong> -> ${safeText(monitorSummary(row))}
+        </li>
+      `, emptyMsg);
+
+      renderEventList(analyzeList, filteredAnalyze, (row) => `
+        <li>
+          <span class="event-time">${ts(row.timestamp)}</span>
+          <strong>${safeText(row.node_id)}</strong> -> ${safeText(row.state)}
+        </li>
+      `, emptyMsg);
+
+      renderEventList(planList, filteredPlan, (row) => `
+        <li>
+          <span class="event-time">${ts(row.timestamp)}</span>
+          <strong>${safeText(row.node_id)}</strong> -> ${safeText(row.plan_code)}
+        </li>
+      `, emptyMsg);
+
+      let executeMerged = [
+        ...(data.execute || []).map((v) => ({ ...v, source: "MAPE-K" })),
+        ...(data.gateway_execute || []).map((v) => ({
+          source: "Gateway",
+          node_id: v.node_id,
+          plan_code: v.plan_code,
+          status: v.status,
+          timestamp: v.timestamp,
+          message: v.error_message || v.description || "",
+        })),
+      ];
+
+      if (selectedNode !== "ALL") {
+        executeMerged = executeMerged.filter((row) => row.node_id === selectedNode);
+      }
+
+      executeMerged = executeMerged
+        .sort((a, b) => new Date(b.timestamp || 0) - new Date(a.timestamp || 0))
+        .slice(0, 20);
+
+      renderEventList(executeList, executeMerged, (row) => {
+        const cls = statusClass(row.status);
+        return `
+          <li>
+            <span class="event-time">${ts(row.timestamp)}</span>
+            <strong>${safeText(row.node_id)}</strong> -> ${safeText(row.plan_code)}
+            <span class="label" style="margin-left: 6px;">${safeText(row.source || "unknown")}</span>
+            <span class="status-pill ${cls}" style="margin-left: 6px;">${safeText(row.status || row.source)}</span>
+          </li>
+        `;
+      }, emptyMsg);
+    }
+
+    function applySummary() {
+      const summary = state.dashboard?.summary || {};
+      monitorCount.textContent =
+        (summary.water_quality_count || 0) +
+        (summary.water_level_count || 0) +
+        (summary.water_flow_count || 0) +
+        (summary.motor_count || 0);
+      analyzeCount.textContent = summary.analyze_count || 0;
+      planCount.textContent = summary.plan_count || 0;
+      executeCount.textContent = summary.execute_count || 0;
+      lastUpdate.textContent = `Last update: ${ts(state.dashboard?.generated_at)}`;
+    }
+
+    async function findApiBase() {
+      const bases = [window.location.origin, "http://localhost:3043"];
+      let lastError = "API unavailable";
+
+      for (const base of [...new Set(bases)]) {
+        try {
+          const res = await fetch(`${base}/dashboard/data?limit=2`, { cache: "no-store" });
+          const text = await res.text();
+          if (!res.ok) {
+            lastError = `HTTP ${res.status} from ${base}`;
+            continue;
+          }
+          if (text.trim().startsWith("<!DOCTYPE") || text.trim().startsWith("<html")) {
+            lastError = `Non-JSON response from ${base}`;
+            continue;
+          }
+          JSON.parse(text);
+          return base;
+        } catch (e) {
+          lastError = e?.message || `Cannot reach ${base}`;
+        }
+      }
+
+      throw new Error(`${lastError}. Open dashboard at http://localhost:3043/dashboard with gateway running.`);
+    }
+
+    async function loadCatalogAndDevices() {
+      const [catalogData, devicesData] = await Promise.all([
+        fetchJson("/scenario/catalog"),
+        fetchJson("/devices"),
+      ]);
+
+      state.catalog = catalogData.scenarios || [];
+      state.devices = devicesData.devices || [];
+      state.scenarioDefaults = {};
+      for (const s of state.catalog) {
+        state.scenarioDefaults[s.code] = s.default_node;
+      }
+
+      scenarioCodeEl.innerHTML = state.catalog
+        .map((s) => `<option value="${safeText(s.code)}">${safeText(s.code)} - ${safeText(s.title)}</option>`)
+        .join("");
+
+      targetNodeEl.innerHTML = state.devices
+        .map((node) => `<option value="${safeText(node)}">${safeText(node)}</option>`)
+        .join("");
+
+      const selectedScenario = scenarioCodeEl.value;
+      const preferredNode = state.scenarioDefaults[selectedScenario];
+      if (preferredNode && state.devices.includes(preferredNode)) {
+        targetNodeEl.value = preferredNode;
+      }
+
+      scenarioCodeEl.addEventListener("change", () => {
+        const pref = state.scenarioDefaults[scenarioCodeEl.value];
+        if (pref && state.devices.includes(pref)) {
+          targetNodeEl.value = pref;
+        }
+      });
+    }
+
+    async function loadStatuses() {
+      const statuses = await Promise.all(
+        (state.devices || []).map(async (nodeId) => {
+          try {
+            const status = await fetchJson(`/device/${encodeURIComponent(nodeId)}/status`);
+            return [nodeId, status];
+          } catch (_e) {
+            return [nodeId, { node_id: nodeId, is_faulty: true, fault_fixed: false, last_command: "--", cycle: "--", injected_scenario: "offline", injected_cycles_left: "--" }];
+          }
+        })
+      );
+
+      state.statusByNode = Object.fromEntries(statuses);
+    }
+
+    async function refreshDashboard() {
+      state.dashboard = await fetchJson("/dashboard/data?limit=20");
+      await loadStatuses();
+      applySummary();
+      refreshTimelineFilterOptions();
+      renderDeviceCards();
+      renderMapekLists();
+    }
+
+    async function injectScenario() {
+      injectBtn.disabled = true;
+      showInjectMessage("warn", "Injecting scenario...");
+
+      const payload = {
+        scenario_code: scenarioCodeEl.value,
+        node_id: targetNodeEl.value,
+        duration_cycles: Number(durationCyclesEl.value || 6),
+        intensity: Number(intensityEl.value || 1.0),
+      };
+
+      try {
+        const result = await fetchJson("/scenario/inject", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        showInjectMessage("ok", `${result.message} on ${result.node_id}. Watch cards and MAPE-K timeline update.`);
+        await refreshDashboard();
+      } catch (e) {
+        const raw = String(e?.message || "Scenario injection failed");
+        const refined = raw.includes("does not expose")
+          ? `${raw} Try: ./scripts/stop_iot_gateway.sh && ./scripts/start_iot_gateway.sh`
+          : raw;
+        showInjectMessage("bad", refined);
+      } finally {
+        injectBtn.disabled = false;
+      }
+    }
+
+    async function resetDatabase() {
+      const confirmed = window.confirm(
+        "This will clear the complete database and re-seed defaults. Continue?"
+      );
+      if (!confirmed) {
+        showAdminMessage("", "Database reset cancelled.");
+        return;
+      }
+
+      const typed = window.prompt("Type RESET_DATABASE to confirm:", "");
+      if (typed !== "RESET_DATABASE") {
+        showAdminMessage("bad", "Confirmation failed. Database reset not executed.");
+        return;
+      }
+
+      resetDatabaseBtn.disabled = true;
+      showAdminMessage("", "Resetting database... please wait.");
+
+      try {
+        const result = await fetchJson("/admin/database/reset", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ confirm_text: typed }),
+        });
+
+        showAdminMessage(
+          "ok",
+          `Reset complete. Cleared ${result.tables_cleared} tables and restored defaults.`
+        );
+
+        await loadCatalogAndDevices();
+        await refreshDashboard();
+      } catch (e) {
+        showAdminMessage("bad", e?.message || "Database reset failed");
+      } finally {
+        resetDatabaseBtn.disabled = false;
+      }
+    }
+
+    async function fetchJson(path, init) {
+      const res = await fetch(`${state.apiBase}${path}`, {
+        cache: "no-store",
+        ...(init || {}),
+      });
+      const text = await res.text();
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status} for ${path}: ${text.slice(0, 120)}`);
+      }
+      if (text.trim().startsWith("<!DOCTYPE") || text.trim().startsWith("<html")) {
+        throw new Error(`Received HTML instead of JSON for ${path}`);
+      }
+      return JSON.parse(text);
+    }
+
+    async function init() {
+      try {
+        state.apiBase = await findApiBase();
+        gatewayInfo.textContent = `Gateway: ${state.apiBase}`;
+
+        await loadCatalogAndDevices();
+        await refreshDashboard();
+
+        injectBtn.addEventListener("click", injectScenario);
+        resetDatabaseBtn.addEventListener("click", resetDatabase);
+        timelineNodeFilterEl.addEventListener("change", () => {
+          state.timelineNodeFilter = timelineNodeFilterEl.value || "ALL";
+          renderMapekLists();
+        });
+        setInterval(async () => {
+          try {
+            await refreshDashboard();
+          } catch (e) {
+            showInjectMessage("bad", e?.message || "Refresh failed");
+          }
+        }, 5000);
+      } catch (e) {
+        const msg = safeText(e?.message || "Dashboard initialization failed");
+        gatewayInfo.textContent = "Gateway: unavailable";
+        deviceGrid.innerHTML = `<div class="empty">Error: ${msg}</div>`;
+        monitorList.innerHTML = `<li class="empty">Error: ${msg}</li>`;
+        analyzeList.innerHTML = `<li class="empty">Error: ${msg}</li>`;
+        planList.innerHTML = `<li class="empty">Error: ${msg}</li>`;
+        executeList.innerHTML = `<li class="empty">Error: ${msg}</li>`;
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>

@@ -162,3 +162,11 @@ cython_debug/
 #.idea/
 knowledge_base.db
 */*.log
+.DS_Store
+.DS_Store
+.DS_Store
+241025_mapek/.iot_pids
+mapek/infrastructure/.DS_Store
+.DS_Store
+mapek/.DS_Store
+mapek/infrastructure/.DS_Store

@@ -1,48 +1,251 @@
 """
-Water Level Sensor Simulator
-Continuously posts water level data to the database via API
+Water Level Sensor Simulator with Command Receiver
+- Continuously posts water level data to IoT Gateway
+- Receives execution commands from MAPE-K via Gateway
+- Applies fixes when commanded
 """
 import time
 import random
 import requests
+import threading
+import uvicorn
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+from datetime import datetime
 
+# Configuration
 SENSOR_ID = "water_level_1"
-API_URL = "http://localhost:3043/iot/water_level"
+GATEWAY_URL = "http://localhost:3043/iot/water_level"
+COMMAND_PORT = 8002
 
-print(f"Starting Water Level Sensor: {SENSOR_ID}")
-print(f"Posting to: {API_URL}")
-print("Press Ctrl+C to stop\n")
+# Sensor state
+sensor_state = {
+    "is_faulty": False,
+    "fault_fixed": False,
+    "last_command": None,
+    "cycle": 0,
+    "injected_scenario": None,
+    "injected_cycles_left": 0,
+    "scenario_step": 0,
+    "fail_commands_left": 0,
+}
 
-cycle = 0
+PLAN_SUCCESS_RATES = {
+    "RESTART_NODE_ENFORCE_REPORTING": 0.85,
+    "SERVICE_HEALTH_CHECK_AND_FIX": 0.8,
+    "DISABLE_SENSOR_AND_RESTART": 0.78,
+    "RESET_SENSING_MODULE": 0.82,
+    "REASSIGN_GATEWAY": 0.74,
+    "ADJUST_CONNECTION_INTERVAL": 0.76,
+    "ENABLE_LOW_POWER_MODE": 0.72,
+    "ISOLATE_SENSOR": 0.75,
+    "VERIFY_AND_REISSUE_COMMAND": 0.7,
+    "RECALIBRATE_SENSOR_PARAMS": 0.8,
+}
 
-while True:
-    cycle += 1
-    
-    # Inject anomaly with 30% probability
-    if random.random() < 0.3:
-        # Anomalous values
-        data = {
-            "node_id": SENSOR_ID,
-            "water_level": round(random.uniform(-5, 0), 2),  # Anomalous water level
-            "temperature": round(random.uniform(40, 60), 2)  # Anomalous temperature
-        }
-        print(f"[Cycle {cycle}] ⚠️  ANOMALY: {data}")
+# FastAPI app for receiving commands
+app = FastAPI(title=f"{SENSOR_ID} Command Receiver")
+
+class CommandRequest(BaseModel):
+    plan_code: str
+    description: str
+
+
+class ScenarioInjectRequest(BaseModel):
+    scenario_code: str
+    duration_cycles: int = 6
+    intensity: float = 1.0
+
+@app.post("/command")
+async def receive_command(command: CommandRequest):
+    """Receive execution command from MAPE-K via Gateway"""
+    print(f"\n{'='*60}")
+    print("COMMAND RECEIVED from MAPE-K Server")
+    print(f"{'='*60}")
+    print(f"Plan Code: {command.plan_code}")
+    print(f"Description: {command.description}")
+    print(f"Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+
+    if sensor_state["fail_commands_left"] > 0:
+        sensor_state["fail_commands_left"] -= 1
+        raise HTTPException(status_code=500, detail="Injected S10: command execution failed")
+
+    success_rate = PLAN_SUCCESS_RATES.get(command.plan_code, 0.78)
+    plan_worked = random.random() < success_rate
+
+    sensor_state["last_command"] = command.plan_code
+    if plan_worked:
+        sensor_state["is_faulty"] = False
+        sensor_state["fault_fixed"] = True
+        sensor_state["injected_scenario"] = None
+        sensor_state["injected_cycles_left"] = 0
+        sensor_state["scenario_step"] = 0
+        print(f"Fix worked (p={success_rate:.2f}) - returning to normal operation")
     else:
-        # Normal values
-        data = {
+        sensor_state["is_faulty"] = True
+        sensor_state["fault_fixed"] = False
+        print(f"Fix command accepted but issue persists (p={success_rate:.2f})")
+
+    print(f"{'='*60}\n")
+
+    return {
+        "status": "success" if plan_worked else "failed",
+        "node_id": SENSOR_ID,
+        "message": (
+            f"Command '{command.plan_code}' executed and issue resolved"
+            if plan_worked
+            else f"Command '{command.plan_code}' executed but issue not resolved"
+        ),
+        "timestamp": datetime.now().isoformat(),
+        "plan_worked": plan_worked,
+    }
+
+
+@app.post("/inject")
+async def inject_scenario(req: ScenarioInjectRequest):
+    code = req.scenario_code.upper().strip()
+    if code not in {"S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11"}:
+        raise HTTPException(status_code=400, detail=f"Unsupported scenario: {code}")
+
+    sensor_state["injected_scenario"] = code
+    sensor_state["injected_cycles_left"] = max(1, min(50, int(req.duration_cycles)))
+    sensor_state["scenario_step"] = 0
+    sensor_state["is_faulty"] = True
+    sensor_state["fault_fixed"] = False
+    if code == "S10":
+        sensor_state["fail_commands_left"] = max(1, min(5, int(req.duration_cycles // 2) or 1))
+
+    return {
+        "status": "success",
+        "node_id": SENSOR_ID,
+        "scenario_code": code,
+        "message": f"Scenario {code} injected"
+    }
+
+@app.get("/status")
+async def get_status():
+    """Get current sensor status"""
+    return {
+        "node_id": SENSOR_ID,
+        "is_faulty": sensor_state["is_faulty"],
+        "fault_fixed": sensor_state["fault_fixed"],
+        "last_command": sensor_state["last_command"],
+        "cycle": sensor_state["cycle"],
+        "injected_scenario": sensor_state["injected_scenario"],
+        "injected_cycles_left": sensor_state["injected_cycles_left"],
+    }
+
+
+def _scenario_payload(code, step):
+    if code == "S1":
+        return {
             "node_id": SENSOR_ID,
-            "water_level": round(random.uniform(1, 10), 2),
-            "temperature": round(random.uniform(20, 30), 2)
+            "water_level": round(8 + step * 1.6, 2),
+            "temperature": round(24 + step * 2.5, 2)
         }
-        print(f"[Cycle {cycle}] ✓ Normal: {data}")
+    if code == "S2":
+        return {"node_id": SENSOR_ID, "water_level": -10.0, "temperature": 25.0}
+    if code == "S3":
+        return {"node_id": SENSOR_ID, "water_level": 0.0, "temperature": 0.0}
+    if code == "S9":
+        return {"node_id": SENSOR_ID, "water_level": 18.0, "temperature": 62.0}
+    return {
+        "node_id": SENSOR_ID,
+        "water_level": round(random.uniform(-5, 0), 2),
+        "temperature": round(random.uniform(40, 60), 2)
+    }
+
+def run_fastapi_server():
+    """Run FastAPI server in background thread"""
+    uvicorn.run(app, host="0.0.0.0", port=COMMAND_PORT, log_level="warning")
+
+def send_sensor_data():
+    """Main sensor data sending loop"""
+    print(f"Starting Water Level Sensor: {SENSOR_ID}")
+    print(f"Posting to: {GATEWAY_URL}")
+    print(f"Command receiver running on: http://localhost:{COMMAND_PORT}")
+    print("Press Ctrl+C to stop\n")
+    
+    while True:
+        sensor_state["cycle"] += 1
+        cycle = sensor_state["cycle"]
+
+        injected_code = sensor_state.get("injected_scenario")
+        if injected_code and sensor_state.get("injected_cycles_left", 0) > 0:
+            sensor_state["scenario_step"] += 1
+            sensor_state["injected_cycles_left"] -= 1
+
+            if injected_code in {"S4", "S11"}:
+                print(f"[Cycle {cycle}] {injected_code} injected: no data sent")
+                time.sleep(60)
+                if sensor_state["injected_cycles_left"] == 0:
+                    sensor_state["injected_scenario"] = None
+                continue
+
+            if injected_code in {"S5", "S6"} and sensor_state["scenario_step"] % 2 == 0:
+                print(f"[Cycle {cycle}] {injected_code} injected: transient disconnect")
+                time.sleep(60)
+                if sensor_state["injected_cycles_left"] == 0:
+                    sensor_state["injected_scenario"] = None
+                continue
+
+            data = _scenario_payload(injected_code, sensor_state["scenario_step"])
+            sensor_state["is_faulty"] = True
+            sensor_state["fault_fixed"] = False
+            print(f"[Cycle {cycle}] Injected {injected_code}: {data}")
+
+            if sensor_state["injected_cycles_left"] == 0:
+                sensor_state["injected_scenario"] = None
+        else:
+            sensor_state["injected_scenario"] = None
+        
+            # If fault was recently fixed, send normal data
+            if sensor_state["fault_fixed"]:
+                data = {
+                    "node_id": SENSOR_ID,
+                    "water_level": round(random.uniform(1, 10), 2),
+                    "temperature": round(random.uniform(20, 30), 2)
+                }
+                print(f"[Cycle {cycle}] FIXED - Normal operation restored: {data}")
+
+                if cycle % 3 == 0:
+                    sensor_state["fault_fixed"] = False
+
+            # Inject anomaly with 30% probability
+            elif random.random() < 0.4:
+                sensor_state["is_faulty"] = True
+                data = {
+                    "node_id": SENSOR_ID,
+                    "water_level": round(random.uniform(-5, 0), 2),
+                    "temperature": round(random.uniform(40, 60), 2)
+                }
+                print(f"[Cycle {cycle}] ANOMALY: {data}")
+            else:
+                sensor_state["is_faulty"] = False
+                data = {
+                    "node_id": SENSOR_ID,
+                    "water_level": round(random.uniform(1, 10), 2),
+                    "temperature": round(random.uniform(20, 30), 2)
+                }
+                print(f"[Cycle {cycle}] Normal: {data}")
+        
+        try:
+            response = requests.post(GATEWAY_URL, json=data, timeout=5)
+            if response.status_code == 200:
+                print("  Data posted successfully to Gateway\n")
+            else:
+                print(f"  Error: HTTP {response.status_code}\n")
+        except Exception as e:
+            print(f"  Error sending data: {e}\n")
+        
+        time.sleep(60)
+
+if __name__ == "__main__":
+    api_thread = threading.Thread(target=run_fastapi_server, daemon=True)
+    api_thread.start()
+    time.sleep(2)
     
     try:
-        response = requests.post(API_URL, json=data, timeout=5)
-        if response.status_code == 200:
-            print(f"  → Data posted successfully\n")
-        else:
-            print(f"  → Error: HTTP {response.status_code}\n")
-    except Exception as e:
-        print(f"  → Error sending data: {e}\n")
-    
-    time.sleep(60)
+        send_sensor_data()
+    except KeyboardInterrupt:
+        print("\n\nShutting down sensor...")

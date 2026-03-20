@@ -90,7 +90,7 @@ class PlainMAPEK:
                 total_params = result.get('total_params', 0)
                 
                 cur.execute("""
-                    INSERT INTO analyze (node_id, result, state, timestamp)
+                    INSERT INTO "analyze" (node_id, result, state, timestamp)
                     VALUES (%s, %s, %s, NOW())
                 """, (node_id, str(result), state))
             

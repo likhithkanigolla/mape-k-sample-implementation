@@ -1,276 +1,306 @@
-# Plain MAPE-K Implementation (Without Design Patterns)
+# IoT MAPE-K System with FastAPI Gateway
 
-This folder contains a **simple, straightforward implementation** of the MAPE-K (Monitor-Analyze-Plan-Execute-Knowledge) loop for a Digital Twin water utility system, **without advanced software engineering patterns**.
-
-## 📁 Folder Structure
-
-```
-241025_mapek/
-├── plain_mapek/          # Plain MAPE-K implementation
-│   ├── main.py          # Main MAPE-K loop
-│   ├── monitor.py       # Monitor component
-│   ├── analyze.py       # Analyze component
-│   ├── plan.py          # Plan component
-│   ├── execute.py       # Execute component
-│   ├── knowledge.py     # Database utilities
-│   └── logger.py        # Logging configuration
-│
-├── iot_scripts/         # IoT sensor simulators
-│   ├── water_quality_sensor.py
-│   ├── water_flow_sensor.py
-│   ├── water_level_sensor.py
-│   └── motor_sensor.py
-│
-└── logs/                # Log files (created automatically)
-```
-
-## 🎯 What is MAPE-K?
-
-MAPE-K is a control loop architecture for autonomic/self-managing systems:
-
-- **Monitor**: Collect sensor data from IoT devices
-- **Analyze**: Compare data against thresholds
-- **Plan**: Select appropriate action plans based on analysis
-- **Execute**: Execute the selected plans
-- **Knowledge**: Shared database with system state and configuration
-
-## 🔄 Comparison: Plain vs Pattern-Based Implementation
-
-### This Implementation (Plain MAPE-K)
-- ✅ **Simple and Direct**: Easy to understand and modify
-- ✅ **Minimal Dependencies**: Just basic Python libraries
-- ✅ **Straightforward Logic**: No abstraction layers
-- ✅ **Good for Learning**: Clear MAPE-K concept demonstration
-- ⚠️ **Limited Flexibility**: Harder to extend with new features
-- ⚠️ **Less Scalable**: Not optimized for large systems
-
-### Pattern-Based Implementation (`/mapek`)
-- ✅ **Advanced Patterns**: Strategy, Observer, Command, Adapter, Template Method
-- ✅ **Highly Flexible**: Easy to add new scenarios and behaviors
-- ✅ **Scalable**: Designed for complex systems
-- ✅ **Production Ready**: Robust error handling and extensibility
-- ⚠️ **More Complex**: Requires understanding of design patterns
-- ⚠️ **More Code**: Higher initial complexity
+A complete bidirectional IoT system implementing the MAPE-K (Monitor-Analyze-Plan-Execute-Knowledge) autonomous control loop with a central FastAPI gateway for device communication.
 
 ## 🚀 Quick Start
 
+```bash
+# 1. Setup (run once)
+./scripts/setup.sh
+
+# 2. Start IoT Gateway and Sensors
+./scripts/start_iot_gateway.sh
+
+# 3. Start MAPE-K (in new terminal)
+cd plain_mapek && python3 main.py
+
+# 4. Test the system
+python3 test_system.py
+
+# 5. Stop everything
+./scripts/stop_iot_gateway.sh
+```
+
+## 📁 Project Structure
+
+```
+241025_mapek/
+├── 📂 scripts/              # Shell scripts for system management
+│   ├── setup.sh             # Complete system setup
+│   ├── start_iot_gateway.sh # Start gateway and sensors
+│   ├── stop_iot_gateway.sh  # Stop all services
+│   ├── start_all.sh         # Original startup script
+│   └── stop_all.sh          # Original stop script
+│
+├── 📂 docs/                 # Complete documentation
+│   ├── README_COMPLETE.md        # 🌟 START HERE - Complete overview
+│   ├── QUICKSTART_IOT_GATEWAY.md # Quick start guide
+│   ├── IOT_GATEWAY_README.md     # Full technical documentation
+│   ├── ARCHITECTURE_FLOW.md      # System architecture diagrams
+│   ├── DATABASE_SCHEMA.md        # Database documentation
+│   ├── TABLES_REFERENCE.md       # Table quick reference
+│   ├── CHANGES_SUMMARY.md        # What was changed/created
+│   ├── QUICKSTART.md             # Original quick start
+│   ├── README.md                 # Original README
+│   └── REORGANIZATION.md         # Original reorganization notes
+│
+├── 📂 iot_scripts/          # IoT sensor simulators (with command receivers)
+│   ├── water_quality_sensor.py   # Port 8001
+│   ├── water_level_sensor.py     # Port 8002
+│   ├── water_flow_sensor.py      # Port 8003
+│   └── motor_sensor.py           # Port 8004
+│
+├── 📂 plain_mapek/          # MAPE-K control loop
+│   ├── main.py              # Main MAPE-K loop
+│   ├── monitor.py           # Monitor component
+│   ├── analyze.py           # Analyze component
+│   ├── plan.py              # Plan component
+│   ├── execute.py           # Execute component (uses Gateway)
+│   ├── knowledge.py         # Database connection
+│   └── logger.py            # Logging utilities
+│
+├── iot_gateway.py           # 🌟 Central FastAPI Gateway (Port 3043)
+├── test_system.py           # Integration tests
+├── requirements.txt         # Python dependencies
+├── setup_complete_database.sql  # Complete database setup
+├── setup_execution_log.sql      # Gateway execution log setup
+└── README.md                # This file
+```
+
+## 🎯 System Architecture
+
+```
+┌─────────────────────────────────────────┐
+│   IoT Sensors (4 devices)               │
+│   • Water Quality :8001                 │
+│   • Water Level :8002                   │
+│   • Water Flow :8003                    │
+│   • Motor :8004                         │
+└──────────────┬──────────────────────────┘
+               │ Send data
+               ↓
+┌─────────────────────────────────────────┐
+│   IoT Gateway :3043 (FastAPI)           │
+│   • Receives sensor data                │
+│   • Stores in PostgreSQL                │
+│   • Routes commands to devices          │
+└──────────────┬──────────────────────────┘
+               │ Monitor reads / Execute sends
+               ↓
+┌─────────────────────────────────────────┐
+│   MAPE-K Control Loop                   │
+│   Monitor → Analyze → Plan → Execute    │
+└─────────────────────────────────────────┘
+```
+
+## 📚 Documentation
+
+**Start with these docs in order:**
+
+1. **[docs/README_COMPLETE.md](docs/README_COMPLETE.md)** - Complete system overview
+2. **[docs/QUICKSTART_IOT_GATEWAY.md](docs/QUICKSTART_IOT_GATEWAY.md)** - Quick start guide
+3. **[docs/DATABASE_SCHEMA.md](docs/DATABASE_SCHEMA.md)** - Database setup
+4. **[docs/IOT_GATEWAY_README.md](docs/IOT_GATEWAY_README.md)** - Full technical docs
+5. **[docs/ARCHITECTURE_FLOW.md](docs/ARCHITECTURE_FLOW.md)** - System flow diagrams
+
+## 🔧 Installation
+
 ### Prerequisites
+- Python 3.8+
+- PostgreSQL
+- pip
 
-1. **PostgreSQL Database** running on `localhost:5432`
-   - Database: `mapek_dt`
-   - User: `postgres`
-   - Password: `postgres`
-
-2. **Python 3.8+** with required packages:
-   ```bash
-   pip install psycopg2-binary requests
-   ```
-
-3. **FastAPI Server** (from `/app`) running on port 3043:
-   ```bash
-   cd app
-   uvicorn main:app --host 0.0.0.0 --port 3043
-   ```
-
-### Database Setup
-
-Ensure your database has the required tables:
-- `water_quality`, `water_flow`, `water_level`, `motor` (sensor data)
-- `thresholds` (parameter thresholds)
-- `plans` (action plans)
-- `nodes` (IoT node information)
-- `analyze`, `plan_selection`, `execution` (MAPE-K results)
-
-### Running the System
-
-#### Step 1: Start IoT Sensors
-
-Open 4 terminal windows and run each sensor:
+### Setup Steps
 
 ```bash
-# Terminal 1: Water Quality Sensor
-cd 241025_mapek/iot_scripts
-python water_quality_sensor.py
+# 1. Install Python dependencies
+pip install -r requirements.txt
 
-# Terminal 2: Water Flow Sensor
-python water_flow_sensor.py
+# 2. Create database and tables
+psql -U postgres -c "CREATE DATABASE mapek_dt;"
+psql -U postgres -d mapek_dt -f setup_complete_database.sql
 
-# Terminal 3: Water Level Sensor
-python water_level_sensor.py
+# 3. Make scripts executable
+chmod +x scripts/*.sh
 
-# Terminal 4: Motor Sensor
-python motor_sensor.py
+# 4. Done! ✅
 ```
 
-The sensors will continuously post data to the API every 60 seconds, with 30% chance of anomalies.
+Or use the automated setup:
+```bash
+chmod +x scripts/setup.sh
+./scripts/setup.sh
+```
 
-#### Step 2: Start MAPE-K Loop
+## 🎮 Usage
 
-In a new terminal:
+### Start the System
 
 ```bash
-cd 241025_mapek/plain_mapek
-python main.py
+# Terminal 1: Start Gateway and Sensors
+./scripts/start_iot_gateway.sh
+
+# Terminal 2: Start MAPE-K
+cd plain_mapek
+python3 main.py
 ```
 
-The MAPE-K loop will:
-1. Read sensor data from database (Monitor)
-2. Analyze data against thresholds (Analyze)
-3. Select appropriate plans (Plan)
-4. Execute plans (Execute)
-5. Wait 60 seconds and repeat
+### Monitor the System
 
-## 📊 How It Works
+```bash
+# Test all components
+python3 test_system.py
 
-### Monitor Phase
-```python
-# Reads latest sensor data from database
-sensor_data = monitor.read_sensors()
-# Returns: [{'node_id': 'water_quality_1', 'temperature': 25.3, ...}, ...]
+# Check Gateway
+curl http://localhost:3043/
+
+# Check device status
+curl http://localhost:8001/status
+
+# View execution logs
+psql -U postgres -d mapek_dt -c "SELECT * FROM recent_executions LIMIT 10;"
 ```
 
-### Analyze Phase
-```python
-# Compares each parameter against thresholds
-analysis_results = analyzer.analyze(sensor_data)
-# Returns: [{'node_id': 'water_quality_1', 'state': 'normal', ...}, ...]
-# States: 'normal', 'warning', 'critical'
+### Stop the System
+
+```bash
+./scripts/stop_iot_gateway.sh
+# Ctrl+C in MAPE-K terminal
 ```
 
-### Plan Phase
-```python
-# Selects action plans based on system state
-selected_plans = planner.select_plans(analysis_results)
-# Returns: [{'node_id': 'water_quality_1', 'plan': {...}}, ...]
+## 🗄️ Database Tables
+
+**11 tables total:**
+
+- **Sensor Data (4):** water_quality, water_level, water_flow, motor
+- **Configuration (3):** nodes, thresholds, plans
+- **MAPE-K Logs (3):** analyze, plan_selection, execution
+- **Gateway Log (1):** execution_log
+
+See [docs/DATABASE_SCHEMA.md](docs/DATABASE_SCHEMA.md) for complete details.
+
+## 🌟 Key Features
+
+- ✅ **Bidirectional Communication** - Sensors send data, receive commands
+- ✅ **Central Gateway** - FastAPI server manages all device communication
+- ✅ **Self-Healing** - Devices automatically fix themselves when commanded
+- ✅ **Complete MAPE-K** - Full autonomous control loop
+- ✅ **Database Logging** - All operations tracked in PostgreSQL
+- ✅ **Easy Management** - Simple scripts to start/stop everything
+- ✅ **Integration Tests** - Automated testing suite
+- ✅ **Production Ready** - Error handling, timeouts, logging
+
+## 📊 Port Reference
+
+| Service | Port | URL |
+|---------|------|-----|
+| IoT Gateway | 3043 | http://localhost:3043 |
+| Water Quality | 8001 | http://localhost:8001 |
+| Water Level | 8002 | http://localhost:8002 |
+| Water Flow | 8003 | http://localhost:8003 |
+| Motor | 8004 | http://localhost:8004 |
+
+## 🧪 Testing
+
+```bash
+# Run all integration tests
+python3 test_system.py
+
+# Manual tests
+curl http://localhost:3043/devices
+curl "http://localhost:3043/monitor/water_quality/latest?limit=3"
+curl -X POST http://localhost:3043/execute/command \
+  -H "Content-Type: application/json" \
+  -d '{"node_id":"water_quality_1","plan_code":"TEST","description":"Test command"}'
 ```
 
-### Execute Phase
-```python
-# Executes the selected plans (simulated for now)
-execution_results = executor.execute(selected_plans)
-# Returns: [{'node_id': 'water_quality_1', 'status': 'success', ...}, ...]
-```
+## 📖 How It Works
 
-## 🔍 Monitoring and Logs
+1. **Sensors generate data** (30% chance of anomaly)
+2. **Sensors POST to Gateway** → Gateway stores in database
+3. **MAPE-K Monitor reads** from Gateway
+4. **Analyzer detects anomalies** using thresholds
+5. **Planner selects fix** from plans table
+6. **Executor sends command** to Gateway
+7. **Gateway routes to device** based on node_id
+8. **Device receives and executes** command
+9. **Device self-heals** and returns to normal
+10. **System continues monitoring** 🔄
 
-### Console Output
-The system logs to both console and file, showing:
-- Each MAPE-K cycle number
-- Sensor readings
-- Analysis results (violations and states)
-- Selected plans
-- Execution results
-
-### Log Files
-Check `241025_mapek/logs/plain_mapek.log` for detailed logs.
-
-### Database Records
-Query the database to see historical data:
-```sql
--- View analysis results
-SELECT * FROM analyze ORDER BY timestamp DESC LIMIT 10;
-
--- View plan selections
-SELECT * FROM plan_selection ORDER BY timestamp DESC LIMIT 10;
-
--- View execution results
-SELECT * FROM execution ORDER BY timestamp DESC LIMIT 10;
-```
-
-## 🛠️ Customization
-
-### Adjust MAPE-K Cycle Interval
-Edit `main.py`:
-```python
-mapek.run(interval=30)  # Run every 30 seconds instead of 60
-```
-
-### Adjust Sensor Posting Frequency
-Edit sensor scripts (e.g., `water_quality_sensor.py`):
-```python
-time.sleep(30)  # Post every 30 seconds instead of 60
-```
-
-### Adjust Anomaly Probability
-Edit sensor scripts:
-```python
-if random.random() < 0.5:  # 50% anomaly rate instead of 30%
-```
-
-## 📈 Expected Behavior
-
-### Normal Operation
-- All sensors report values within thresholds
-- Analysis shows 'normal' state
-- Plans for 'normal' state are selected
-- Execution succeeds
-
-### Warning State
-- Some parameters exceed thresholds
-- Analysis shows 'warning' state
-- Plans for 'warning' state are selected (e.g., "increase monitoring frequency")
-
-### Critical State
-- Many parameters exceed thresholds
-- Analysis shows 'critical' state
-- Plans for 'critical' state are selected (e.g., "shutdown system", "alert operators")
-
-## 🐛 Troubleshooting
-
-### "Database connection error"
-- Check PostgreSQL is running: `pg_isready`
-- Verify database exists: `psql -U postgres -d mapek_dt`
-- Check credentials in `knowledge.py`
-
-### "Error sending data" (from sensors)
-- Ensure FastAPI server is running on port 3043
-- Check server logs for errors
-- Verify API endpoints match sensor URLs
-
-### "No sensor data available"
-- Wait 60 seconds for sensors to post first data
-- Check database tables have recent data
-- Verify sensors are running
-
-## 📚 Next Steps
-
-### For Learning
-1. Study each MAPE-K component file
-2. Add print statements to trace execution flow
-3. Modify threshold values in database and observe behavior
-4. Create new sensor types
-
-### For Development
-1. Compare with pattern-based implementation in `/mapek`
-2. Implement actual IoT device communication (replace simulation)
-3. Add more sophisticated analysis algorithms
-4. Implement real plan execution (not simulated)
-
-## 🔗 Related Files
-
-- **Pattern-Based Implementation**: `/mapek` - Advanced version with design patterns
-- **FastAPI Server**: `/app/main.py` - API server for receiving sensor data
-- **Database Schema**: `/mapek/create_tables.sql` - Database setup
-
-## 📝 Notes
-
-- This is a **simplified educational implementation**
-- Execution is currently **simulated** (no actual IoT commands sent)
-- For production use, see the pattern-based implementation in `/mapek`
-- Database connections are created per operation (not pooled)
-- Error handling is basic (suitable for learning, not production)
+See [docs/ARCHITECTURE_FLOW.md](docs/ARCHITECTURE_FLOW.md) for detailed flow diagrams.
 
 ## 🤝 Contributing
 
-This is a learning implementation. Feel free to:
-- Add more sensor types
-- Improve error handling
-- Add unit tests
-- Create visualization tools
-- Document edge cases
+This is a research/educational project demonstrating:
+- IoT device management
+- Autonomous control systems (MAPE-K)
+- Microservices architecture
+- Self-healing systems
+- FastAPI web services
+
+## 📄 License
+
+Educational/Research Project
+
+## 🆘 Troubleshooting
+
+### Gateway won't start
+```bash
+lsof -ti:3043 | xargs kill -9
+```
+
+### Database connection error
+```bash
+# Check database exists
+psql -U postgres -l | grep mapek_dt
+
+# Recreate if needed
+psql -U postgres -d mapek_dt -f setup_complete_database.sql
+```
+
+### Sensors not responding
+```bash
+# Check if running
+lsof -ti:8001,8002,8003,8004
+
+# Restart
+./scripts/stop_iot_gateway.sh
+./scripts/start_iot_gateway.sh
+```
+
+See [docs/IOT_GATEWAY_README.md](docs/IOT_GATEWAY_README.md) for more troubleshooting.
+
+## 📞 Quick Commands Reference
+
+```bash
+# Setup
+./scripts/setup.sh
+
+# Start
+./scripts/start_iot_gateway.sh
+cd plain_mapek && python3 main.py
+
+# Test
+python3 test_system.py
+
+# Monitor
+psql -U postgres -d mapek_dt -c "SELECT * FROM recent_executions;"
+
+# Stop
+./scripts/stop_iot_gateway.sh
+```
+
+## 🎓 Learn More
+
+- **Complete Documentation:** [docs/](docs/)
+- **Database Schema:** [docs/DATABASE_SCHEMA.md](docs/DATABASE_SCHEMA.md)
+- **System Architecture:** [docs/ARCHITECTURE_FLOW.md](docs/ARCHITECTURE_FLOW.md)
+- **Change Log:** [docs/CHANGES_SUMMARY.md](docs/CHANGES_SUMMARY.md)
 
 ---
 
-**Created**: October 24, 2025  
-**Purpose**: Educational plain MAPE-K implementation for Digital Twin systems  
-**Maintainer**: IIITH Code Files - Digital Twin Project
+**Built with:** Python, FastAPI, PostgreSQL, MAPE-K Architecture
+
+**Status:** ✅ Production Ready
+
+**Last Updated:** October 24, 2025
